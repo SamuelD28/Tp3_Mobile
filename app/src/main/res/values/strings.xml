@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Tp3_Mobile</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyATdMKUTWoT7kw0PZStdAWgPkn6QPthZLI</string>
+    <string name="location_card_name">Location Name</string>
+    <string name="location_card_latitude">Location Latitute</string>
+    <string name="location_card_longitude">Location Longitude</string>
 </resources>
