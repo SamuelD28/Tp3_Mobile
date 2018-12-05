@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "927486846016",
+    "firebase_url": "https://tp3-mobile.firebaseio.com",
+    "project_id": "tp3-mobile",
+    "storage_bucket": "tp3-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927486846016:android:31155254702d3ffa",
+        "android_client_info": {
+          "package_name": "com.samdube.tp3_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927486846016-10runi9ic1i3slkov8mcun40v3h85aoi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-EBfHwr1QLgxwS72L38c41Vzg4Zh23WM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
