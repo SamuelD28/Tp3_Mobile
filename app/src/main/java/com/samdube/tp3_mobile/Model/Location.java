@@ -5,14 +5,14 @@ import java.util.UUID;
 public class Location {
 
     //Propeties
-    private int mLat;
-    private int mLng;
+    private double mLat;
+    private double mLng;
     private String mName;
     private UUID mUUID;
 
     //Constructor
 
-    public Location(int mLat, int mLng, String mName) {
+    public Location(double mLat, double mLng, String mName) {
         this.mLat = mLat;
         this.mLng = mLng;
         this.mName = mName;
@@ -22,10 +22,10 @@ public class Location {
     public UUID getId() {
         return mUUID;
     }
-    public int getLat() {
+    public double getLat() {
         return mLat;
     }
-    public int getLng() {
+    public double getLng() {
         return mLng;
     }
     public String getName() {
