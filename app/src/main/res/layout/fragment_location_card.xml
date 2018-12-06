@@ -3,33 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@drawable/common_google_signin_btn_text_light_normal_background"
+        android:gravity="left|center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/location_card_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            app:srcCompat="@drawable/ic_entertainment" />
+
         <TextView
             android:id="@+id/location_card_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            tools:text="@string/location_card_name" />
+            android:layout_weight=".5"
+            android:fontFamily="@font/raleway_medium"
+            android:text="@string/location_card_name"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/location_card_longitude"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/location_card_longitude" />
+            android:layout_weight=".2"
+            android:fontFamily="sans-serif"
+            android:text="@string/location_card_longitude"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/location_card_latitude"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/location_card_latitude" />
+            android:layout_weight=".2"
+            android:fontFamily="sans-serif"
+            android:text="@string/location_card_latitude"
+            android:textSize="12sp" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

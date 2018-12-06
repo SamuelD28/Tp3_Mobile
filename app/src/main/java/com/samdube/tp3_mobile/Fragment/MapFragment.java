@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +28,10 @@ import com.samdube.tp3_mobile.Marker.LocationClusterRenderer;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.samdube.tp3_mobile.Model.Location.Category;
 
@@ -153,18 +159,7 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         Location location = (Location) marker.getTag();
-
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.fragment_location_details, (ViewGroup) getActivity().findViewById(R.id.location_details_root));
-
-        EditText locationName = view.findViewById(R.id.location_details_name);
-        EditText locationDescription = view.findViewById(R.id.location_details_description);
-
-        locationName.setText(location.getName());
-        locationDescription.setText(location.getDescription());
-
-        builder.setIcon(R.drawable.ic_hotel);
-        builder.setView(view);
+        builder.setView(GenerateLocationDetailView(location));
         builder.setCancelable(true)
                 .setNeutralButton("Modifier", new DialogInterface.OnClickListener() {
                     @Override
@@ -177,7 +172,26 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
                         dialog.cancel();
                     }
                 });
+
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public View GenerateLocationDetailView(Location location)
+    {
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.fragment_location_details, (ViewGroup) getActivity().findViewById(R.id.location_details_root));
+
+        EditText locationNameInput = view.findViewById(R.id.location_details_nameInput);
+        EditText locationDescriptionInput = view.findViewById(R.id.location_details_descInput);
+        Spinner  locationCategroyInput = view.findViewById(R.id.location_details_categoryInput);
+
+        ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getContext(), R.layout.spinner_item, Category.values());
+        locationCategroyInput.setAdapter(adapter);
+
+        locationNameInput.setText(location.getName());
+        locationDescriptionInput.setText(location.getDescription());
+
+        return view;
     }
 }

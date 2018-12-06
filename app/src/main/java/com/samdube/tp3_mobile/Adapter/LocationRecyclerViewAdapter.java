@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.samdube.tp3_mobile.Model.Location;
@@ -47,6 +48,14 @@ public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRe
             holder.mName.setText(location.getName());
             holder.mLatitude.setText(String.valueOf(location.getLat()));
             holder.mLongitutde.setText(String.valueOf(location.getLng()));
+
+            switch(location.getCategory())
+            {
+                case Entertainment: holder.mCategory.setImageResource(R.drawable.ic_entertainment); break;
+                case Restaurant: holder.mCategory.setImageResource(R.drawable.ic_restaurant); break;
+                case Hotel: holder.mCategory.setImageResource(R.drawable.ic_hotel); break;
+                case Touristic: holder.mCategory.setImageResource(R.drawable.ic_touristic); break;
+            }
         }
     }
 
@@ -66,6 +75,7 @@ public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRe
         private TextView mName = null;
         private TextView mLatitude = null;
         private TextView mLongitutde = null;
+        private ImageView mCategory = null;
 
         /** Constructor for the ViewHolder. We select item from the view here.
          * @param itemView The created view
@@ -75,6 +85,7 @@ public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRe
             this.mName = itemView.findViewById(R.id.location_card_name);
             this.mLatitude = itemView.findViewById(R.id.location_card_latitude);
             this.mLongitutde = itemView.findViewById(R.id.location_card_longitude);
+            this.mCategory = itemView.findViewById(R.id.location_card_category);
         }
     }
 
