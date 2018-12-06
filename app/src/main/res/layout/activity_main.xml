@@ -32,12 +32,45 @@
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight=".4"
+            android:layout_weight=".5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/top_fragment">
 
         </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/main_buttonAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/btn_mode_add"
+                android:textColor="@android:color/background_light" />
+
+            <Button
+                android:id="@+id/main_buttonInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/btn_mode_Info"
+                android:textColor="@android:color/background_light" />
+
+            <Button
+                android:id="@+id/main_buttonEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/btn_mode_Edit"
+                android:textColor="@android:color/background_light" />
+        </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -21,32 +21,29 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.ui.IconGenerator;
-import com.samdube.tp3_mobile.Marker.LocationClusterItem;
-import com.samdube.tp3_mobile.Marker.LocationClusterRenderer;
+import com.samdube.tp3_mobile.Activity.MainActivity;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
+import static com.samdube.tp3_mobile.Activity.MainActivity.*;
 import static com.samdube.tp3_mobile.Model.Location.Category;
+import static java.util.concurrent.CompletableFuture.*;
 
-/**
- * This shows how to create a simple activity with a raw MapView and add a marker to it. This
- * requires forwarding all the important lifecycle methods onto MapView.
- */
 public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoWindowClickListener {
 
-    private static final String TAG = "Map Fragment";
+    public interface ModeState{
+        void HandleModeStateChange(Mode newMode);
+        Mode GetCurrentMode();
+    }
 
+    private static final String TAG = "Map Fragment";
     private GoogleMap mMap;
     private LocationLog mLocationLog;
-    private ClusterManager<LocationClusterItem> mClusterManager;
-    private LocationClusterRenderer mClusterManagerRenderer;
+    private ModeState mParentActivity;
 
     @Override
     public void onAttach(Context context) {
@@ -62,14 +59,15 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
+        mParentActivity = (ModeState)getActivity();
+
         mLocationLog = LocationLog.GetInstance();
 
         getMapAsync(googleMap -> {
             mMap = googleMap;
 
-            mMap.setOnMapClickListener(latLng -> {
+            mMap.setOnMapClickListener(latLng -> { AddMarker(latLng); });
 
-            });
             PopulateMapWithMarkers();
             mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
                 @Override
@@ -87,17 +85,30 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
                     Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
                 }
             });
-//            mMap.setOnMarkerClickListener(marker -> {
-//                marker.remove();
-//
-//                return true;
-//            });
+
+            mMap.setOnMarkerClickListener(marker -> RemoveMarker(marker));
         });
-
-
     }
 
-    public void PopulateMapWithMarkers()
+    private void AddMarker(LatLng latLng){
+
+        if(mParentActivity.GetCurrentMode() == Mode.ADD){
+            Location newLocation = new Location(latLng.latitude, latLng.longitude, "Japon", "Tres beau", Category.Restaurant);
+            GenerateMarker(newLocation);
+        }
+    }
+
+    private boolean RemoveMarker(Marker marker)
+    {
+        if(mParentActivity.GetCurrentMode() == Mode.EDIT)
+        {
+            marker.remove();
+            return true;
+        }
+        return false;
+    }
+
+    private void PopulateMapWithMarkers()
     {
         for(Location location : mLocationLog.getmLocations())
         {
@@ -106,7 +117,7 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
         mMap.setOnInfoWindowClickListener(this);
     }
 
-     public Marker GenerateMarker(Location location)
+     private Marker GenerateMarker(Location location)
      {
          //We create the marker options for the marker
          MarkerOptions mkOptions = GenerateMarkerOptions(location);
@@ -117,7 +128,7 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
          return mk;
      }
 
-     public MarkerOptions GenerateMarkerOptions(Location location)
+     private MarkerOptions GenerateMarkerOptions(Location location)
      {
          //Object needed for creating marker options
          MarkerOptions mkOptions = new MarkerOptions();
@@ -132,7 +143,7 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
          return mkOptions;
      }
 
-     public BitmapDescriptor GenerateMarkerIcon(Category locationCategory)
+     private BitmapDescriptor GenerateMarkerIcon(Category locationCategory)
      {
          //Both objects needed to generate an icon for a marker
          IconGenerator iconGenerator = new IconGenerator(getContext());
@@ -177,7 +188,7 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
         alert.show();
     }
 
-    public View GenerateLocationDetailView(Location location)
+    private View GenerateLocationDetailView(Location location)
     {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.fragment_location_details, (ViewGroup) getActivity().findViewById(R.id.location_details_root));

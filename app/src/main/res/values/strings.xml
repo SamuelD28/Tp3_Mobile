@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tp3_Mobile</string>
+    <string name="app_name">My Geographic Life</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyATdMKUTWoT7kw0PZStdAWgPkn6QPthZLI</string>
     <string name="location_card_name">Location Name</string>
     <string name="location_card_latitude">Location Latitute</string>
@@ -13,4 +13,8 @@
     <string name="location_details_descLabel">Description</string>
     <string name="location_details_descInput">Description of the location</string>
     <string name="location_details_categoryLabel">Category</string>
+
+    <string name="btn_mode_add">Add</string>
+    <string name="btn_mode_Info">Info</string>
+    <string name="btn_mode_Edit">Edit</string>
 </resources>
