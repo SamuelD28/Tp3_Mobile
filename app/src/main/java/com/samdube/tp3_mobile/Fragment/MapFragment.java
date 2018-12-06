@@ -3,17 +3,16 @@ package com.samdube.tp3_mobile.Fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -21,18 +20,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.view.ClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
-import com.samdube.tp3_mobile.Activity.MainActivity;
 import com.samdube.tp3_mobile.Marker.LocationClusterItem;
 import com.samdube.tp3_mobile.Marker.LocationClusterRenderer;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
 
-import java.util.ArrayList;
-
-import static com.samdube.tp3_mobile.Model.Location.*;
+import static com.samdube.tp3_mobile.Model.Location.Category;
 
 /**
  * This shows how to create a simple activity with a raw MapView and add a marker to it. This
@@ -159,13 +154,17 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
 
         Location location = (Location) marker.getTag();
 
-        builder.setMessage(location.getDescription());
-        builder.setTitle(location.getName());
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.fragment_location_details, (ViewGroup) getActivity().findViewById(R.id.location_details_root));
+
+        EditText locationName = view.findViewById(R.id.location_details_name);
+        EditText locationDescription = view.findViewById(R.id.location_details_description);
+
+        locationName.setText(location.getName());
+        locationDescription.setText(location.getDescription());
+
         builder.setIcon(R.drawable.ic_hotel);
-
-        builder.setView(new MainActivity());
-        builder.setView(R.layout.fragment_location_card);
-
+        builder.setView(view);
         builder.setCancelable(true)
                 .setNeutralButton("Modifier", new DialogInterface.OnClickListener() {
                     @Override
