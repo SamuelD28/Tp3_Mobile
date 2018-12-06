@@ -4,20 +4,26 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.ClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
+import com.samdube.tp3_mobile.Activity.MainActivity;
 import com.samdube.tp3_mobile.Marker.LocationClusterItem;
 import com.samdube.tp3_mobile.Marker.LocationClusterRenderer;
 import com.samdube.tp3_mobile.Model.Location;
@@ -25,6 +31,8 @@ import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
 
 import java.util.ArrayList;
+
+import static com.samdube.tp3_mobile.Model.Location.*;
 
 /**
  * This shows how to create a simple activity with a raw MapView and add a marker to it. This
@@ -57,20 +65,11 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
 
         getMapAsync(googleMap -> {
             mMap = googleMap;
-            mClusterManager = new ClusterManager<>(getActivity().getApplicationContext(), mMap);
+
             mMap.setOnMapClickListener(latLng -> {
 
-                Location location = new Location(latLng.longitude, latLng.latitude, "Miel");
-                LocationClusterItem newClusterMarker = new LocationClusterItem(
-                                                        latLng,
-                                                        "Test",
-                                                        "Continuer",
-                                                        location
-                );
-                mClusterManager.addItem(newClusterMarker);
-                mClusterManager.cluster();
             });
-            GenerateMarker();
+            PopulateMapWithMarkers();
             mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
                 @Override
                 public void onMarkerDragStart(Marker marker) {
@@ -97,68 +96,84 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
 
     }
 
-    private void addMapMarkers(GoogleMap map) {
-
-        if (map != null) {
-
-            if (mClusterManagerRenderer == null) {
-                mClusterManagerRenderer = new LocationClusterRenderer(getActivity(), map, mClusterManager, null, null, 50, 50);
-                mClusterManager.setRenderer(mClusterManagerRenderer);
-            }
-            map.setOnInfoWindowClickListener(this);
-
-            for (Location location : mLocationLog.getmLocations()) {
-//                Log.d(TAG, "addMapMarkers: location: " + userLocation.getGeo_point().toString());
-                try {
-                    String snippet = "Hey";
-
-                    int avatar = R.drawable.amu_bubble_mask; // set the default avatar
-                    LocationClusterItem newClusterMarker = new LocationClusterItem(
-                                                            new LatLng(location.getLat(), location.getLng()),
-                                                            location.getName(),
-                                                            snippet,
-                                                            location
-                    );
-                    mClusterManager.addItem(newClusterMarker);
-
-                } catch (NullPointerException e) {
-                    Log.e(TAG, "addMapMarkers: NullPointerException: " + e.getMessage());
-                }
-                mClusterManager.cluster();
-
-//            setCameraView();
-            }
-        }
-    }
-
-    public void GenerateMarker()
+    public void PopulateMapWithMarkers()
     {
         for(Location location : mLocationLog.getmLocations())
         {
-            LatLng latlng = new LatLng(location.getLat(), location.getLng());
-            MarkerOptions mk = new MarkerOptions().position(latlng);
-            mk.title("Japon");
-            mk.draggable(true);
-            mMap.addMarker(mk);
+            GenerateMarker(location);
         }
         mMap.setOnInfoWindowClickListener(this);
     }
+
+     public Marker GenerateMarker(Location location)
+     {
+         //We create the marker options for the marker
+         MarkerOptions mkOptions = GenerateMarkerOptions(location);
+         //We create a new marker and add it to the map object
+         Marker mk = mMap.addMarker(mkOptions);
+         //We set the tag of the marker to hold the location obejct. We can access it more easily outside the function
+         mk.setTag(location);
+         return mk;
+     }
+
+     public MarkerOptions GenerateMarkerOptions(Location location)
+     {
+         //Object needed for creating marker options
+         MarkerOptions mkOptions = new MarkerOptions();
+         LatLng latlng = new LatLng(location.getLat(), location.getLng());
+
+         //Sets the different options of the marker
+         mkOptions.position(latlng);
+         mkOptions.title(location.getName());
+         mkOptions.icon(GenerateMarkerIcon(location.getCategory()));
+         mkOptions.draggable(true); //This option will need to change based on the mode
+
+         return mkOptions;
+     }
+
+     public BitmapDescriptor GenerateMarkerIcon(Category locationCategory)
+     {
+         //Both objects needed to generate an icon for a marker
+         IconGenerator iconGenerator = new IconGenerator(getContext());
+         ImageView image = new ImageView(getContext());
+
+         //Set the appropriate image based on the locatino category
+         switch(locationCategory){
+             case Hotel: image.setImageResource(R.drawable.ic_hotel); break;
+             case Touristic: image.setImageResource(R.drawable.ic_touristic); break;
+             case Restaurant: image.setImageResource(R.drawable.ic_restaurant); break;
+             case Entertainment: image.setImageResource(R.drawable.ic_entertainment); break;
+         }
+
+         //Create the icon bitmap with the image view
+         iconGenerator.setContentView(image);
+         Bitmap bitmap = iconGenerator.makeIcon();
+
+         return BitmapDescriptorFactory.fromBitmap(bitmap);
+     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setMessage(marker.getSnippet())
-                .setCancelable(true)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-//                            resetSelectedMarker();
-//                            mSelectedMarker = marker;
+        Location location = (Location) marker.getTag();
+
+        builder.setMessage(location.getDescription());
+        builder.setTitle(location.getName());
+        builder.setIcon(R.drawable.ic_hotel);
+
+        builder.setView(new MainActivity());
+        builder.setView(R.layout.fragment_location_card);
+
+        builder.setCancelable(true)
+                .setNeutralButton("Modifier", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Supprimer", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         dialog.cancel();
                     }

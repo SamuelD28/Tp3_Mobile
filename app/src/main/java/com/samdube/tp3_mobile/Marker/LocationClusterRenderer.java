@@ -29,12 +29,12 @@ public class LocationClusterRenderer extends DefaultClusterRenderer<LocationClus
         this.markerHeight = markerHeight;
 
 //        iconGenerator = new IconGenerator(context.getApplicationContext());
-////        imageView = new ImageView(context.getApplicationContext());
-////        markerWidth = 60; //fix this
-////        markerHeight = 60; //fix this
-////        imageView.setLayoutParams(new ViewGroup.LayoutParams(markerWidth, markerHeight));
-////        int padding = 10; // fix this
-////        imageView.setPadding(padding,padding,padding,padding);
+//        imageView = new ImageView(context.getApplicationContext());
+//        markerWidth = 60; //fix this
+//        markerHeight = 60; //fix this
+//        imageView.setLayoutParams(new ViewGroup.LayoutParams(markerWidth, markerHeight));
+//        int padding = 10; // fix this
+//        imageView.setPadding(padding,padding,padding,padding);
 //        iconGenerator.setContentView(imageView);
     }
 
