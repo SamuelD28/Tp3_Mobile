@@ -2,7 +2,6 @@ package com.samdube.tp3_mobile.Fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -22,77 +22,61 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
-import com.samdube.tp3_mobile.Activity.MainActivity;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
 
-import java.util.concurrent.CompletableFuture;
-
-import static com.samdube.tp3_mobile.Activity.MainActivity.*;
+import static com.samdube.tp3_mobile.Activity.MainActivity.Mode;
 import static com.samdube.tp3_mobile.Model.Location.Category;
-import static java.util.concurrent.CompletableFuture.*;
 
-public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoWindowClickListener {
+public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     public interface ModeState{
         void HandleModeStateChange(Mode newMode);
         Mode GetCurrentMode();
     }
 
-    private static final String TAG = "Map Fragment";
     private GoogleMap mMap;
     private LocationLog mLocationLog;
-    private ModeState mParentActivity;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
+    private ModeState mModeState; //This hold the parent activity
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        mParentActivity = (ModeState)getActivity();
-
+        mModeState = (ModeState)getActivity();
         mLocationLog = LocationLog.GetInstance();
 
-        getMapAsync(googleMap -> {
-            mMap = googleMap;
+        getMapAsync(this);
+    }
 
-            mMap.setOnMapClickListener(latLng -> { AddMarker(latLng); });
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setOnMapClickListener(latLng -> { AddMarker(latLng); });
+        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker marker) {
+                Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
+            }
 
-            PopulateMapWithMarkers();
-            mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-                @Override
-                public void onMarkerDragStart(Marker marker) {
-                    Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
-                }
+            @Override
+            public void onMarkerDrag(Marker marker) {
+                Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
+            }
 
-                @Override
-                public void onMarkerDrag(Marker marker) {
-                    Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onMarkerDragEnd(Marker marker) {
-                    Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            mMap.setOnMarkerClickListener(marker -> RemoveMarker(marker));
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+                Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
+            }
         });
+        mMap.setOnMarkerClickListener(marker -> RemoveMarker(marker));
+        PopulateMapWithMarkers();
     }
 
     private void AddMarker(LatLng latLng){
 
-        if(mParentActivity.GetCurrentMode() == Mode.ADD){
+        if(mModeState.GetCurrentMode() == Mode.ADD){
             Location newLocation = new Location(latLng.latitude, latLng.longitude, "Japon", "Tres beau", Category.Restaurant);
             GenerateMarker(newLocation);
         }
@@ -100,7 +84,7 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
 
     private boolean RemoveMarker(Marker marker)
     {
-        if(mParentActivity.GetCurrentMode() == Mode.EDIT)
+        if(mModeState.GetCurrentMode() == Mode.EDIT)
         {
             marker.remove();
             return true;
@@ -172,17 +156,8 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
         Location location = (Location) marker.getTag();
         builder.setView(GenerateLocationDetailView(location));
         builder.setCancelable(true)
-                .setNeutralButton("Modifier", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("Supprimer", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        dialog.cancel();
-                    }
-                });
+                .setNeutralButton("Modifier", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton("Supprimer", (dialog, id) -> dialog.cancel());
 
         final AlertDialog alert = builder.create();
         alert.show();
