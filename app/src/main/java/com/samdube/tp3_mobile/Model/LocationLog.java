@@ -14,7 +14,7 @@ public class LocationLog {
     public static LocationLog GetInstance()
     {
         if(INSTANCE == null)
-            return new LocationLog();
+            INSTANCE =  new LocationLog();
 
         return INSTANCE;
     }
@@ -52,7 +52,7 @@ public class LocationLog {
         return true;
     }
 
-    public boolean AddTask(Location location){
+    public boolean AddLocation(Location location){
         return mLocations.add(location);
     }
 

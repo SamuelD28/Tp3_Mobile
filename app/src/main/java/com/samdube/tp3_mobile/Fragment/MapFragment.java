@@ -168,7 +168,7 @@ public  class       MapFragment
     public void onInfoWindowClick(Marker marker)
     {
         Location location = (Location) marker.getTag();
-        new LocationDetailDialog(getContext(), getActivity(), mApplicationState,(Location)marker.getTag());
+        new LocationDetailDialog(getContext(), getActivity(), mApplicationState, location);
     }
 
 }

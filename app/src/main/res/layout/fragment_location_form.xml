@@ -10,6 +10,8 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="auto"
+        android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:padding="20dp"
         app:layout_constraintBottom_toTopOf="@+id/location_detail_editBtn"
@@ -127,20 +129,18 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <Button
-            android:id="@+id/location_form_editBtn"
+            android:id="@+id/location_form_confirmBtn"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:text="@string/btn_edit_coordinate"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="10sp" />
 
         <Button
-            android:id="@+id/location_form_deleteBtn"
+            android:id="@+id/location_form_cancelBtn"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:text="@string/btn_delete"
             android:textColor="@color/Crimson"
             android:textSize="10sp" />
     </LinearLayout>

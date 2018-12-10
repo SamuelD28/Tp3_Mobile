@@ -2,6 +2,8 @@ package com.samdube.tp3_mobile.View;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.View;
+import android.widget.Toast;
 
 import com.samdube.tp3_mobile.Adapter.SpinnerCategoryAdapter;
 import com.samdube.tp3_mobile.Interface.IApplicationState;
@@ -25,5 +27,28 @@ public class LocationDetailDialog extends LocationFormDialog {
         mLocationNameInput.setText(mLocation.getName());
         mLocationDescInput.setText(mLocation.getDescription());
         mLocationCategorySpinner.setAdapter(SpinnerCategoryAdapter.CreateAdapter(getContext()));
+
+        mConfirmButton.setText(R.string.btn_edit_coordinate);
+        mCancelButton.setText(R.string.btn_delete);
+    }
+
+    @Override
+    public View.OnClickListener HandleConfirm() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mActivity, "Confirm", Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
+    @Override
+    public View.OnClickListener HandleCancel() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mActivity, "Cancel", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 }
