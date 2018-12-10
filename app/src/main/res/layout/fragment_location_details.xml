@@ -7,10 +7,12 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/location_detail_editBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -111,6 +113,37 @@
                 android:paddingTop="4dp"
                 android:paddingRight="4dp"
                 android:paddingBottom="4dp" />
+
         </LinearLayout>
+
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/location_detail_editBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Modifier Coordonnée"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Supprimer"
+            android:textColor="@color/Crimson"
+            android:textSize="10sp" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

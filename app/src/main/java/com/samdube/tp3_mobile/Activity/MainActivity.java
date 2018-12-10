@@ -6,10 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.Marker;
+import com.samdube.tp3_mobile.Fragment.LocationAddFragment;
+import com.samdube.tp3_mobile.Fragment.LocationEditFragment;
 import com.samdube.tp3_mobile.Fragment.LocationsListFragment;
 import com.samdube.tp3_mobile.Fragment.MapFragment;
-import com.samdube.tp3_mobile.Interface.IModeState;
+import com.samdube.tp3_mobile.Interface.IApplicationState;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.R;
 
@@ -21,7 +22,7 @@ import static com.samdube.tp3_mobile.Activity.MainActivity.ButtonState.NonActive
 
 public  class       MainActivity
         extends     DualFragmentActivity
-        implements  View.OnClickListener, IModeState {
+        implements  View.OnClickListener, IApplicationState {
 
     public enum ButtonState{
         Active,
@@ -64,7 +65,16 @@ public  class       MainActivity
             else{
                 mCurrentMode = newMode;
                 ChangeButtonsStyle(newMode);
-                setTopFragment(new LocationsListFragment());
+
+                switch (newMode) {
+                    case ADD: setTopFragment(new LocationAddFragment());
+                        break;
+                    case EDIT: setTopFragment(new LocationEditFragment());
+                        break;
+                    case INFO: setTopFragment(new LocationsListFragment());
+                        break;
+                }
+
                 setMainFragment(new MapFragment());
             }
         }
@@ -81,7 +91,6 @@ public  class       MainActivity
     public void SetSelectedLocation(Location location) {
         mSelectedLocation = location;
     }
-
 
     private void ChangeButtonsStyle(Mode mode)
     {

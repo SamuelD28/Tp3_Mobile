@@ -1,6 +1,5 @@
 package com.samdube.tp3_mobile.Fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.samdube.tp3_mobile.Adapter.LocationRecyclerViewAdapter;
 import com.samdube.tp3_mobile.Adapter.RecyclerItemClickListener;
-import com.samdube.tp3_mobile.Interface.IModeState;
+import com.samdube.tp3_mobile.Interface.IApplicationState;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
@@ -23,42 +22,25 @@ public
         class LocationsListFragment
         extends Fragment implements RecyclerItemClickListener.OnRecyclerClickListener {
 
+    private RecyclerView mLocationsRecyclerView;
     private LocationLog mLocationLog;
-    private View mView;
-    private LayoutInflater mInflater;
-    private IModeState mModeState;
+    private IApplicationState mApplicationState;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mInflater = inflater;
-        mModeState = (IModeState)getActivity();
+        View view = inflater.inflate(R.layout.fragment_location_list, container.findViewById(R.id.location_list_root));
+
+        mLocationsRecyclerView = view.findViewById(R.id.locations_list_recyclerView);
         mLocationLog = LocationLog.GetInstance();
+        mApplicationState = (IApplicationState)getActivity();
 
-        InitialiseView();
-
-        return mView;
+        GenerateLocationsList();
+        return view;
     }
 
-    private void InitialiseView() {
-        switch (mModeState.GetCurrentMode()){
-            case INFO:  ChangeToInfoMode(); break;
-            case EDIT:  ChangeToEditMode(); break;
-            case ADD:   ChangeToAddMode(); break;
-        }
-    }
-    private void ChangeToAddMode() {
-        mView = mInflater.inflate(R.layout.fragment_locations_add, getActivity().findViewById(R.id.locations_add_root));
-    }
+    private void GenerateLocationsList() {
 
-    private View ChangeToEditMode() {
-        return null;
-    }
-
-    private void ChangeToInfoMode() {
-        mView = mInflater.inflate(R.layout.fragment_locations_list, (ViewGroup) getActivity().findViewById(R.id.location_list_root));
-
-        RecyclerView mLocationsRecyclerView = mView.findViewById(R.id.locations_list_recyclerView);
         //Set the layout manager for the layout view
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 //        linearLayoutManager.setReverseLayout(true);
@@ -73,11 +55,10 @@ public
         mLocationsRecyclerView.setAdapter(mTaskRecyclerViewAdapter);
     }
 
-
     @Override
     public void onItemClick(View view, int position) {
         Location location = mLocationLog.getmLocations().get(position);
-        new LocationDetailDialog(getContext(), getActivity(), location, mModeState);
+        new LocationDetailDialog(getContext(), getActivity(), location, mApplicationState);
     }
 
     @Override

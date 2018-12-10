@@ -14,10 +14,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
-import com.samdube.tp3_mobile.Interface.IModeState;
+import com.samdube.tp3_mobile.Interface.IApplicationState;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
+import com.samdube.tp3_mobile.View.LocationAddDialog;
 import com.samdube.tp3_mobile.View.LocationDetailDialog;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public  class       MapFragment
 
     private GoogleMap mMap;
     private LocationLog mLocationLog;
-    private IModeState mModeState; //This hold the parent activity
+    private IApplicationState mModeState; //This hold the parent activity
     private ArrayList<Marker> mMarkers;
 
     @Override
@@ -38,7 +39,7 @@ public  class       MapFragment
         super.onCreate(bundle);
 
         mMarkers = new ArrayList<>();
-        mModeState = (IModeState)getActivity();
+        mModeState = (IApplicationState)getActivity();
         mLocationLog = LocationLog.GetInstance();
 
         getMapAsync(this);
@@ -68,6 +69,7 @@ public  class       MapFragment
             @Override
             public boolean onMarkerClick(Marker marker) {
                 marker.showInfoWindow();
+
                 mModeState.SetSelectedLocation((Location)marker.getTag());
                 return true;
             }
@@ -103,8 +105,8 @@ public  class       MapFragment
 
     private void AddMarker(LatLng latLng)
     {
-        Location newLocation = new Location(latLng.latitude, latLng.longitude, "Japon", "Tres beau", Category.Restaurant);
-        GenerateMarker(newLocation);
+        new LocationAddDialog(getContext(), getActivity(), latLng);
+//        GenerateMarker(newLocation);
     }
 
     private void GenerateMarkers()

@@ -3,7 +3,7 @@ package com.samdube.tp3_mobile.Interface;
 import com.google.android.gms.maps.model.Marker;
 import com.samdube.tp3_mobile.Model.Location;
 
-public interface IModeState {
+public interface IApplicationState {
 
     void HandleModeStateChange(Mode newMode);
     Mode GetCurrentMode();
