@@ -1,16 +1,8 @@
 package com.samdube.tp3_mobile.Fragment;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -22,29 +14,31 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
+import com.samdube.tp3_mobile.Interface.IModeState;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
+import com.samdube.tp3_mobile.View.LocationDetailDialog;
 
-import static com.samdube.tp3_mobile.Activity.MainActivity.Mode;
+import java.util.ArrayList;
+
 import static com.samdube.tp3_mobile.Model.Location.Category;
 
-public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
-
-    public interface ModeState{
-        void HandleModeStateChange(Mode newMode);
-        Mode GetCurrentMode();
-    }
+public  class       MapFragment
+        extends     SupportMapFragment
+        implements  GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     private GoogleMap mMap;
     private LocationLog mLocationLog;
-    private ModeState mModeState; //This hold the parent activity
+    private IModeState mModeState; //This hold the parent activity
+    private ArrayList<Marker> mMarkers;
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        mModeState = (ModeState)getActivity();
+        mMarkers = new ArrayList<>();
+        mModeState = (IModeState)getActivity();
         mLocationLog = LocationLog.GetInstance();
 
         getMapAsync(this);
@@ -53,7 +47,42 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        switch(mModeState.GetCurrentMode())
+        {
+            case ADD: ChangeToAddMode(); break;
+            case EDIT: ChangeToEditMode(); break;
+            case INFO: ChangeToInfoMode(); break;
+        }
+    }
+
+    public void ChangeToAddMode()
+    {
+        GenerateMarkers();
         mMap.setOnMapClickListener(latLng -> { AddMarker(latLng); });
+    }
+
+    public void ChangeToInfoMode()
+    {
+        GenerateMarkers();
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                mModeState.SetSelectedLocation((Location)marker.getTag());
+                return true;
+            }
+        });
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mModeState.SetSelectedLocation(null);
+            }
+        });
+    }
+
+    public void ChangeToEditMode()
+    {
+        GenerateMarker(mModeState.GetSelectedLocation()).setDraggable(true);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {
@@ -70,33 +99,19 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
                 Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        mMap.setOnMarkerClickListener(marker -> RemoveMarker(marker));
-        PopulateMapWithMarkers();
     }
 
-    private void AddMarker(LatLng latLng){
-
-        if(mModeState.GetCurrentMode() == Mode.ADD){
-            Location newLocation = new Location(latLng.latitude, latLng.longitude, "Japon", "Tres beau", Category.Restaurant);
-            GenerateMarker(newLocation);
-        }
-    }
-
-    private boolean RemoveMarker(Marker marker)
+    private void AddMarker(LatLng latLng)
     {
-        if(mModeState.GetCurrentMode() == Mode.EDIT)
-        {
-            marker.remove();
-            return true;
-        }
-        return false;
+        Location newLocation = new Location(latLng.latitude, latLng.longitude, "Japon", "Tres beau", Category.Restaurant);
+        GenerateMarker(newLocation);
     }
 
-    private void PopulateMapWithMarkers()
+    private void GenerateMarkers()
     {
         for(Location location : mLocationLog.getmLocations())
         {
-            GenerateMarker(location);
+            mMarkers.add(GenerateMarker(location));
         }
         mMap.setOnInfoWindowClickListener(this);
     }
@@ -107,7 +122,7 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
          MarkerOptions mkOptions = GenerateMarkerOptions(location);
          //We create a new marker and add it to the map object
          Marker mk = mMap.addMarker(mkOptions);
-         //We set the tag of the marker to hold the location obejct. We can access it more easily outside the function
+         //We set the tag of the marker to hold the location object. We can access it more easily outside the function
          mk.setTag(location);
          return mk;
      }
@@ -122,7 +137,6 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
          mkOptions.position(latlng);
          mkOptions.title(location.getName());
          mkOptions.icon(GenerateMarkerIcon(location.getCategory()));
-         mkOptions.draggable(true); //This option will need to change based on the mode
 
          return mkOptions;
      }
@@ -149,35 +163,9 @@ public class MapFragment extends SupportMapFragment implements GoogleMap.OnInfoW
      }
 
     @Override
-    public void onInfoWindowClick(Marker marker) {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        Location location = (Location) marker.getTag();
-        builder.setView(GenerateLocationDetailView(location));
-        builder.setCancelable(true)
-                .setNeutralButton("Modifier", (dialog, which) -> dialog.dismiss())
-                .setNegativeButton("Supprimer", (dialog, id) -> dialog.cancel());
-
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    private View GenerateLocationDetailView(Location location)
+    public void onInfoWindowClick(Marker marker)
     {
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.fragment_location_details, (ViewGroup) getActivity().findViewById(R.id.location_details_root));
-
-        EditText locationNameInput = view.findViewById(R.id.location_details_nameInput);
-        EditText locationDescriptionInput = view.findViewById(R.id.location_details_descInput);
-        Spinner  locationCategroyInput = view.findViewById(R.id.location_details_categoryInput);
-
-        ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getContext(), R.layout.spinner_item, Category.values());
-        locationCategroyInput.setAdapter(adapter);
-
-        locationNameInput.setText(location.getName());
-        locationDescriptionInput.setText(location.getDescription());
-
-        return view;
+        new LocationDetailDialog(getContext(), getActivity(),(Location)marker.getTag(), mModeState);
     }
+
 }

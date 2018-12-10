@@ -1,56 +1,44 @@
 package com.samdube.tp3_mobile.Activity;
 
-import android.graphics.Color;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.Marker;
 import com.samdube.tp3_mobile.Fragment.LocationsListFragment;
 import com.samdube.tp3_mobile.Fragment.MapFragment;
+import com.samdube.tp3_mobile.Interface.IModeState;
+import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.samdube.tp3_mobile.Activity.MainActivity.ButtonState.*;
+import static com.samdube.tp3_mobile.Activity.MainActivity.ButtonState.Active;
+import static com.samdube.tp3_mobile.Activity.MainActivity.ButtonState.NonActive;
 
-public class MainActivity extends DualFragmentActivity implements View.OnClickListener, MapFragment.ModeState {
+public  class       MainActivity
+        extends     DualFragmentActivity
+        implements  View.OnClickListener, IModeState {
 
     public enum ButtonState{
         Active,
         NonActive
     }
 
-    public enum Mode{
-        ADD,
-        EDIT,
-        INFO
-    }
-
     private Button mButtonAdd;
     private Button mButtonInfo;
     private Button mButtonEdit;
     private ArrayList<Button> mModeButtons;
-
-    private LocationsListFragment mLocationListFragment;
-    private MapFragment mMapFragment;
-
+    private Location mSelectedLocation;
     private Mode mCurrentMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mLocationListFragment = new LocationsListFragment();
-        mMapFragment = new MapFragment();
-
-        setTopFragment(mLocationListFragment);
-        setMainFragment(mMapFragment);
 
         mButtonAdd = findViewById(R.id.main_buttonAdd);
         mButtonInfo = findViewById(R.id.main_buttonInfo);
@@ -63,24 +51,37 @@ public class MainActivity extends DualFragmentActivity implements View.OnClickLi
         mModeButtons = new ArrayList<>();
         mModeButtons.addAll(Arrays.asList(mButtonAdd, mButtonInfo, mButtonEdit));
 
-        mCurrentMode = Mode.INFO;
-        HandleModeStateChange(mCurrentMode);
+        HandleModeStateChange(Mode.INFO);
     }
 
+    //Interface implementation
     @Override
-    public void HandleModeStateChange(Mode newMode)
-    {
+    public void HandleModeStateChange(Mode newMode) {
         if(newMode != mCurrentMode){
-            mCurrentMode = newMode;
-            Toast.makeText(this, "Mode Changed to " + newMode.toString(), Toast.LENGTH_SHORT).show();
-            ChangeButtonsStyle(newMode);
+
+            if(newMode == Mode.EDIT && mSelectedLocation == null)
+                Toast.makeText(this, "Cant change to edit mode", Toast.LENGTH_SHORT).show();
+            else{
+                mCurrentMode = newMode;
+                ChangeButtonsStyle(newMode);
+                setTopFragment(new LocationsListFragment());
+                setMainFragment(new MapFragment());
+            }
         }
     }
-
     @Override
     public Mode GetCurrentMode() {
         return mCurrentMode;
     }
+    @Override
+    public Location GetSelectedLocation() {
+        return mSelectedLocation;
+    }
+    @Override
+    public void SetSelectedLocation(Location location) {
+        mSelectedLocation = location;
+    }
+
 
     private void ChangeButtonsStyle(Mode mode)
     {

@@ -3,7 +3,9 @@ package com.samdube.tp3_mobile.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.samdube.tp3_mobile.R;
 
@@ -28,6 +30,13 @@ public abstract class DualFragmentActivity extends AppCompatActivity {
                     .add(resId,fragment)
                     .commit();
         }
+        else{
+            fm.beginTransaction()
+                    .replace(resId, newFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+        }
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,6 +5,8 @@
     <string name="location_card_latitude">Location Latitute</string>
     <string name="location_card_longitude">Location Longitude</string>
 
+    <string name="locations_add_title">Tap on the location you visited</string>
+
     <string name="location_list_title">Visited Locations</string>
 
     <string name="location_details_title">Location details</string>
@@ -16,5 +18,6 @@
 
     <string name="btn_mode_add">Add</string>
     <string name="btn_mode_Info">Info</string>
+    <string name="btn_mode_default">Default</string>
     <string name="btn_mode_Edit">Edit</string>
 </resources>

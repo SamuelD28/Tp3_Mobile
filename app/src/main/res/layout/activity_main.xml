@@ -12,8 +12,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <FrameLayout
             android:id="@+id/top_fragment"
@@ -46,21 +48,21 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/main_buttonAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/btn_mode_add"
-                android:textColor="@android:color/background_light" />
-
-            <Button
                 android:id="@+id/main_buttonInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:text="@string/btn_mode_Info"
+                android:textColor="@android:color/background_light" />
+
+            <Button
+                android:id="@+id/main_buttonAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/btn_mode_add"
                 android:textColor="@android:color/background_light" />
 
             <Button
