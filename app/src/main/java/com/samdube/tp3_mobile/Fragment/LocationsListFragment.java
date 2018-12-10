@@ -58,7 +58,7 @@ public
     @Override
     public void onItemClick(View view, int position) {
         Location location = mLocationLog.getmLocations().get(position);
-        new LocationDetailDialog(getContext(), getActivity(), location, mApplicationState);
+        new LocationDetailDialog(getContext(), getActivity(), location);
     }
 
     @Override

@@ -31,7 +31,7 @@ public  class       MapFragment
 
     private GoogleMap mMap;
     private LocationLog mLocationLog;
-    private IApplicationState mModeState; //This hold the parent activity
+    private IApplicationState mApplicationState; //This hold the parent activity
     private ArrayList<Marker> mMarkers;
 
     @Override
@@ -39,7 +39,7 @@ public  class       MapFragment
         super.onCreate(bundle);
 
         mMarkers = new ArrayList<>();
-        mModeState = (IApplicationState)getActivity();
+        mApplicationState = (IApplicationState)getActivity();
         mLocationLog = LocationLog.GetInstance();
 
         getMapAsync(this);
@@ -48,7 +48,7 @@ public  class       MapFragment
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        switch(mModeState.GetCurrentMode())
+        switch(mApplicationState.GetCurrentMode())
         {
             case ADD: ChangeToAddMode(); break;
             case EDIT: ChangeToEditMode(); break;
@@ -70,21 +70,21 @@ public  class       MapFragment
             public boolean onMarkerClick(Marker marker) {
                 marker.showInfoWindow();
 
-                mModeState.SetSelectedLocation((Location)marker.getTag());
+                mApplicationState.SetSelectedLocation((Location)marker.getTag());
                 return true;
             }
         });
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                mModeState.SetSelectedLocation(null);
+                mApplicationState.SetSelectedLocation(null);
             }
         });
     }
 
     public void ChangeToEditMode()
     {
-        GenerateMarker(mModeState.GetSelectedLocation()).setDraggable(true);
+        GenerateMarker(mApplicationState.GetSelectedLocation()).setDraggable(true);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {
@@ -105,7 +105,7 @@ public  class       MapFragment
 
     private void AddMarker(LatLng latLng)
     {
-        new LocationAddDialog(getContext(), getActivity(), latLng);
+        new LocationAddDialog(getContext(), getActivity(), mApplicationState, latLng);
 //        GenerateMarker(newLocation);
     }
 
@@ -167,7 +167,8 @@ public  class       MapFragment
     @Override
     public void onInfoWindowClick(Marker marker)
     {
-        new LocationDetailDialog(getContext(), getActivity(),(Location)marker.getTag(), mModeState);
+        Location location = (Location) marker.getTag();
+        new LocationDetailDialog(getContext(), getActivity(), mApplicationState,(Location)marker.getTag());
     }
 
 }

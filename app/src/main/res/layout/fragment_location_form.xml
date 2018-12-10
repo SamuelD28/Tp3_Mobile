@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/location_details_root"
+    android:id="@+id/location_form_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,12 +18,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/location_form_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:text="@string/location_details_title"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp" />
 
@@ -34,27 +33,27 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/location_details_nameLabel"
+                android:id="@+id/location_form_nameLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:fontFamily="@font/raleway_medium"
-                android:text="@string/location_details_nameLabel" />
+                android:text="@string/location_form_nameLabel" />
 
             <EditText
-                android:id="@+id/location_details_nameInput"
+                android:id="@+id/location_form_nameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_textinput"
                 android:ems="10"
                 android:fontFamily="@font/raleway_thin"
-                android:hint="@string/location_details_nameInput"
+                android:hint="@string/location_form_nameInput"
                 android:inputType="textPersonName"
                 android:paddingLeft="4dp"
                 android:paddingTop="8dp"
                 android:paddingRight="4dp"
                 android:paddingBottom="8dp"
-                android:text="@string/location_details_nameInput"
+                android:text="@string/location_form_nameInput"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -65,28 +64,28 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/location_details_descLabel"
+                android:id="@+id/location_form_descLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:fontFamily="@font/raleway_medium"
-                android:text="@string/location_details_descLabel" />
+                android:text="@string/location_form_descLabel" />
 
             <EditText
-                android:id="@+id/location_details_descInput"
+                android:id="@+id/location_form_descInput"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:background="@drawable/bg_textarea"
                 android:ems="10"
                 android:fontFamily="@font/raleway_thin"
                 android:gravity="top"
-                android:hint="@string/location_details_descInput"
+                android:hint="@string/location_form_descInput"
                 android:inputType="textMultiLine"
                 android:paddingLeft="4dp"
                 android:paddingTop="8dp"
                 android:paddingRight="4dp"
                 android:paddingBottom="4dp"
-                android:text="@string/location_details_descInput"
+                android:text="@string/location_form_descInput"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -97,15 +96,15 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/location_details_categoryLabel"
+                android:id="@+id/location_form_categoryLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:fontFamily="@font/raleway_medium"
-                android:text="@string/location_details_categoryLabel" />
+                android:text="@string/location_form_categoryLabel" />
 
             <Spinner
-                android:id="@+id/location_details_categoryInput"
+                android:id="@+id/location_form_categoryInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_spinner"
@@ -128,20 +127,20 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/location_form_editBtn"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:text="Modifier Coordonnée"
+            android:text="@string/btn_edit_coordinate"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="10sp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/location_form_deleteBtn"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:text="Supprimer"
+            android:text="@string/btn_delete"
             android:textColor="@color/Crimson"
             android:textSize="10sp" />
     </LinearLayout>

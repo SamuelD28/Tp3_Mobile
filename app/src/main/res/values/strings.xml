@@ -9,13 +9,22 @@
 
     <string name="location_list_title">Visited Locations</string>
 
-    <string name="location_details_title">Location details</string>
-    <string name="location_details_nameLabel">Name</string>
-    <string name="location_details_nameInput">Name of the location...</string>
-    <string name="location_details_descLabel">Description</string>
-    <string name="location_details_descInput">Description of the location</string>
-    <string name="location_details_categoryLabel">Category</string>
+    <string name="location_edit_title">Location details</string>
+    <string name="location_add_title">Add new location</string>
 
+    <string name="location_form_nameLabel">Name</string>
+    <string name="location_form_nameInput">Name of the location...</string>
+    <string name="location_form_descLabel">Description</string>
+    <string name="location_form_descInput">Description of the location</string>
+    <string name="location_form_categoryLabel">Category</string>
+
+    <string name="location_edit_latitude">Latitude</string>
+    <string name="location_edit_longitude">Longitude</string>
+
+    <string name="btn_edit_coordinate">Edit Coordinate</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="btn_delete">Delete</string>
     <string name="btn_mode_add">Add</string>
     <string name="btn_mode_Info">Info</string>
     <string name="btn_mode_default">Default</string>

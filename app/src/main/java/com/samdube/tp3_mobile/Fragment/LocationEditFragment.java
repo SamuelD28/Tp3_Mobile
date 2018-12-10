@@ -25,7 +25,7 @@ public class LocationEditFragment extends Fragment {
 
         mApplicationState = (IApplicationState)getActivity();
 
-        Button cancelBtn = view.findViewById(R.id.cancel_Btn);
+        Button cancelBtn = view.findViewById(R.id.location_edit_cancelBtn);
         cancelBtn.setOnClickListener(v -> mApplicationState.HandleModeStateChange(Mode.INFO));
 
         return view;
