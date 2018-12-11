@@ -32,7 +32,7 @@ public
         View view = inflater.inflate(R.layout.fragment_location_list, container.findViewById(R.id.location_list_root));
 
         mLocationsRecyclerView = view.findViewById(R.id.locations_list_recyclerView);
-        mLocationLog = LocationLog.GetInstance();
+        mLocationLog = LocationLog.GetInstance(getContext());
         mMainActivityState = (MainActivityState)getActivity();
 
         GenerateLocationsList();
@@ -49,13 +49,13 @@ public
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mLocationsRecyclerView.setLayoutManager(linearLayoutManager); //Might need to acess context from activity
         mLocationsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mLocationsRecyclerView, this));
-        LocationRecyclerViewAdapter mTaskRecyclerViewAdapter = new LocationRecyclerViewAdapter(mLocationLog.getmLocations());
+        LocationRecyclerViewAdapter mTaskRecyclerViewAdapter = new LocationRecyclerViewAdapter(getContext());
         mLocationsRecyclerView.setAdapter(mTaskRecyclerViewAdapter);
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Location location = mLocationLog.getmLocations().get(position);
+        Location location = mLocationLog.getLocations().get(position);
         mMainActivityState.setSelectedLocation(location);
         new LocationDetailDialog(getContext(), getActivity(), mMainActivityState, location);
     }

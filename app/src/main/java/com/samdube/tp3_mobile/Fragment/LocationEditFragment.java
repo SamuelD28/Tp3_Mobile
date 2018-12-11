@@ -41,7 +41,7 @@ public class LocationEditFragment extends Fragment {
         mMainActivityState = (MainActivityState)getActivity();
         mUpdateCoordinate = (EditFragmentCallback)getActivity();
         mSelectedLocation = mMainActivityState.getTemporaryLocation();
-        mLocationLog = LocationLog.GetInstance();
+        mLocationLog = LocationLog.GetInstance(getContext());
 
         Button confirmButton = view.findViewById(R.id.location_edit_confirmBtn);
         confirmButton.setOnClickListener(HandleConfirm());
@@ -59,7 +59,7 @@ public class LocationEditFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLocationLog.UpdateLocation(mSelectedLocation.getId(), mSelectedLocation);
+                mLocationLog.UpdateLocation(mSelectedLocation);
                 mMainActivityState.ChangeActivityMode(Mode.INFO);
             }
         };

@@ -45,7 +45,7 @@ public abstract class LocationFormDialog extends AlertDialog {
         mActivity = activity;
         mContext = context;
         mMainActivityState = mainActivityState;
-        mLocationLog = LocationLog.GetInstance();
+        mLocationLog = LocationLog.GetInstance(getContext());
         mLocation = location;
         mMainActivityState.setSelectedLocation(location);
         ShowLocationDialog(context, activity);

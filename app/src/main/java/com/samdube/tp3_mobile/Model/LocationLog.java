@@ -8,7 +8,6 @@ import com.samdube.tp3_mobile.Database.LocationBaseHelper;
 import com.samdube.tp3_mobile.Database.LocationCursorWrapper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -91,16 +90,13 @@ public class LocationLog {
                 LocationTable.Cols.UUID + "=?",
                 new String[]{location.getId().toString()}
         );
+        return true;
     }
 
-    public boolean DeleteTask(UUID id){
-//        Location taskToDelete = mLocations.stream().filter(t -> t.getId() == id).findFirst().get();
-//
-//        if(taskToDelete == null)
-//            return false;
-//
-//        mLocations.remove(mLocations.indexOf(taskToDelete));
-        return true;
+    public void DeleteTask(UUID id){
+        mDatabase.delete(LocationTable.NAME,
+                LocationTable.Cols.UUID + "=?",
+                new String[]{id.toString()});
     }
 
     public void AddLocation(Location location){
@@ -122,6 +118,7 @@ public class LocationLog {
 
     private void DataSeed(){
 
+
         String tempDescription = "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.";
 
         Location data1 = new Location(0,0,"Vietnam", tempDescription, Category.Restaurant);
@@ -131,6 +128,11 @@ public class LocationLog {
         Location data5 = new Location(4,4,"USA",tempDescription, Category.Restaurant);
         Location data6 = new Location(5,5,"Irlande",tempDescription, Category.Restaurant);
 
-//        mLocations.addAll(Arrays.asList(data1, data2,data3,data4, data5, data6));
+        AddLocation(data1);
+        AddLocation(data2);
+        AddLocation(data3);
+        AddLocation(data4);
+        AddLocation(data5);
+        AddLocation(data6);
     }
 }

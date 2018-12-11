@@ -42,7 +42,7 @@ public  class       MapFragment
         mMarkers = new ArrayList<>();
         mMainActivityState = (MainActivityState)getActivity();
         mEditFragmentCallback = (EditFragmentCallback)getActivity();
-        mLocationLog = LocationLog.GetInstance();
+        mLocationLog = LocationLog.GetInstance(getContext());
 
         getMapAsync(this);
     }
@@ -136,7 +136,7 @@ public  class       MapFragment
 
     private void GenerateMarkers()
     {
-        for(Location location : mLocationLog.getmLocations())
+        for(Location location : mLocationLog.getLocations())
         {
             mMarkers.add(GenerateMarker(location));
         }

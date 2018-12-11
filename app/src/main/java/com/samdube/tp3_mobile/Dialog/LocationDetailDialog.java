@@ -52,7 +52,7 @@ public class LocationDetailDialog extends LocationFormDialog {
             public void onClick(View v) {
                 if(FormVerification()){
                     ApplyChangeToLocation();
-                    mLocationLog.UpdateLocation(mLocation.getId(), mLocation);
+                    mLocationLog.UpdateLocation(mLocation);
                     mMainActivityState.RefreshState();
                     mCurrentDialog.dismiss();
                 }

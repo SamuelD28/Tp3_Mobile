@@ -1,6 +1,7 @@
 package com.samdube.tp3_mobile.Adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.samdube.tp3_mobile.Model.Location;
+import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
 
 import java.util.List;
@@ -19,13 +21,12 @@ import java.util.List;
  */
 public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRecyclerViewAdapter.LocationViewHolder>{
 
-    private List<Location> mLocations; //Property that holds the task list.
+    private LocationLog mLocationLog; //Property that holds the task list.
 
     /** Constructor for the Recycler View adapter. We need a list argument to instantiate the class
-     * @param locations List to instantiate the recycler view with.
      */
-    public LocationRecyclerViewAdapter(List<Location> locations) {
-        this.mLocations = locations;
+    public LocationRecyclerViewAdapter(Context context) {
+        this.mLocationLog = LocationLog.GetInstance(context);
     }
 
     @NonNull
@@ -39,11 +40,12 @@ public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRe
     @Override
     public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
 
-        if((mLocations == null) || (mLocations.size() == 0)) {
+        if((mLocationLog.getLocations().isEmpty()))
+        {
             //If nothing is ccontained inside the tasklist, we display a default card to the user
             holder.mName.setText("Aucune location Disponible");
         } else {
-            Location location = mLocations.get(position); //We retrieve the corresponding task that was clicked inside the recycler view
+            Location location = mLocationLog.getLocations().get(position);
 
             holder.mName.setText(location.getName());
             holder.mLatitude.setText(String.valueOf(location.getLat()));
@@ -64,7 +66,7 @@ public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRe
      */
     @Override
     public int getItemCount() {
-        return ((mLocations != null) && (mLocations.size() != 0)? mLocations.size(): 0);
+        return ((mLocationLog != null) && (mLocationLog.getLocations().size() != 0)? mLocationLog.getLocations().size(): 0);
     }
 
     /** Class used by the recycler view to create new list item.
