@@ -47,6 +47,14 @@ public class Location {
         this.mCategory = category;
         this.mUUID = UUID.randomUUID();
     }
+    public Location(double lat, double lng, String name, String description, Category category, UUID uuid) {
+        this.mLat = lat;
+        this.mLng = lng;
+        this.mName = name;
+        this.mDescription = description;
+        this.mCategory = category;
+        this.mUUID = uuid;
+    }
 
     public void UpdateLocation(Location newLocation)
     {
