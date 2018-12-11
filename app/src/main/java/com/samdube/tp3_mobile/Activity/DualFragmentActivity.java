@@ -21,9 +21,7 @@ public abstract class DualFragmentActivity extends AppCompatActivity {
 
     private void setFragment(int resId, Fragment newFragment){
         FragmentManager fm = getSupportFragmentManager();
-
         Fragment fragment = fm.findFragmentById(resId);
-
         if (fragment == null){
             fragment = newFragment;
             fm.beginTransaction()

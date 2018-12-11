@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 
 import com.samdube.tp3_mobile.Adapter.LocationRecyclerViewAdapter;
 import com.samdube.tp3_mobile.Adapter.RecyclerItemClickListener;
-import com.samdube.tp3_mobile.Interface.IApplicationState;
+import com.samdube.tp3_mobile.Abstract.MainActivityState;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
-import com.samdube.tp3_mobile.View.LocationDetailDialog;
+import com.samdube.tp3_mobile.Dialog.LocationDetailDialog;
 
 public
         class LocationsListFragment
@@ -24,7 +24,7 @@ public
 
     private RecyclerView mLocationsRecyclerView;
     private LocationLog mLocationLog;
-    private IApplicationState mApplicationState;
+    private MainActivityState mMainActivityState;
 
     @Nullable
     @Override
@@ -33,24 +33,22 @@ public
 
         mLocationsRecyclerView = view.findViewById(R.id.locations_list_recyclerView);
         mLocationLog = LocationLog.GetInstance();
-        mApplicationState = (IApplicationState)getActivity();
+        mMainActivityState = (MainActivityState)getActivity();
 
         GenerateLocationsList();
         return view;
     }
 
-    private void GenerateLocationsList() {
+    public void RefreshLocationsList()
+    {
+        GenerateLocationsList();
+    }
 
+    private void GenerateLocationsList() {
         //Set the layout manager for the layout view
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//        linearLayoutManager.setReverseLayout(true);
-//        linearLayoutManager.setStackFromEnd(true);
         mLocationsRecyclerView.setLayoutManager(linearLayoutManager); //Might need to acess context from activity
-
         mLocationsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mLocationsRecyclerView, this));
-        //Set the event listener when a item in the recycler view is taped
-//        mLocationsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mTaskRecyclerView, this));
-        //Set the adapater for the recycler view
         LocationRecyclerViewAdapter mTaskRecyclerViewAdapter = new LocationRecyclerViewAdapter(mLocationLog.getmLocations());
         mLocationsRecyclerView.setAdapter(mTaskRecyclerViewAdapter);
     }
@@ -58,7 +56,8 @@ public
     @Override
     public void onItemClick(View view, int position) {
         Location location = mLocationLog.getmLocations().get(position);
-        new LocationDetailDialog(getContext(), getActivity(), mApplicationState, location);
+        mMainActivityState.setSelectedLocation(location);
+        new LocationDetailDialog(getContext(), getActivity(), mMainActivityState, location);
     }
 
     @Override

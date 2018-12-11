@@ -21,6 +21,7 @@
     <string name="location_edit_latitude">Latitude</string>
     <string name="location_edit_longitude">Longitude</string>
 
+    <string name="btn_save">Save</string>
     <string name="btn_edit_coordinate">Edit Coordinate</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_confirm">Confirm</string>

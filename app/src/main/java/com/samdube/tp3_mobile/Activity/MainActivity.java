@@ -6,12 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.samdube.tp3_mobile.Fragment.LocationAddFragment;
 import com.samdube.tp3_mobile.Fragment.LocationEditFragment;
 import com.samdube.tp3_mobile.Fragment.LocationsListFragment;
 import com.samdube.tp3_mobile.Fragment.MapFragment;
-import com.samdube.tp3_mobile.Interface.IApplicationState;
-import com.samdube.tp3_mobile.Model.Location;
+import com.samdube.tp3_mobile.Abstract.MainActivityState;
 import com.samdube.tp3_mobile.R;
 
 import java.util.ArrayList;
@@ -21,9 +21,10 @@ import static com.samdube.tp3_mobile.Activity.MainActivity.ButtonState.Active;
 import static com.samdube.tp3_mobile.Activity.MainActivity.ButtonState.NonActive;
 
 public  class       MainActivity
-        extends     DualFragmentActivity
-        implements  View.OnClickListener, IApplicationState {
+        extends     MainActivityState
+        implements  View.OnClickListener, LocationEditFragment.EditFragmentCallback {
 
+    //Should extract
     public enum ButtonState{
         Active,
         NonActive
@@ -33,8 +34,11 @@ public  class       MainActivity
     private Button mButtonInfo;
     private Button mButtonEdit;
     private ArrayList<Button> mModeButtons;
-    private Location mSelectedLocation;
-    private Mode mCurrentMode;
+
+    private LocationEditFragment mLocationEditFragment;
+    private LocationAddFragment mLocationAddFragment;
+    private LocationsListFragment mLocationListFragment;
+    private MapFragment mMapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,48 +56,56 @@ public  class       MainActivity
         mModeButtons = new ArrayList<>();
         mModeButtons.addAll(Arrays.asList(mButtonAdd, mButtonInfo, mButtonEdit));
 
-        HandleModeStateChange(Mode.INFO);
+        ChangeActivityMode(Mode.INFO);
     }
 
-    //Interface implementation
     @Override
-    public void HandleModeStateChange(Mode newMode) {
+    public void ChangeActivityMode(Mode newMode) {
         if(newMode != mCurrentMode){
 
             if(newMode == Mode.EDIT && mSelectedLocation == null)
-                Toast.makeText(this, "Cant change to edit mode", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Select a location", Toast.LENGTH_SHORT).show();
             else{
                 mCurrentMode = newMode;
                 ChangeButtonsStyle(newMode);
 
                 switch (newMode) {
-                    case ADD: setTopFragment(new LocationAddFragment());
+                    case ADD:
+                        mLocationAddFragment = new LocationAddFragment();
+                        setTopFragment(mLocationAddFragment);
                         break;
-                    case EDIT: setTopFragment(new LocationEditFragment());
+                    case EDIT:
+                        mLocationEditFragment = new LocationEditFragment();
+                        setTopFragment(mLocationEditFragment);
                         break;
-                    case INFO: setTopFragment(new LocationsListFragment());
+                    case INFO:
+                        mLocationListFragment = new LocationsListFragment();
+                        setTopFragment(mLocationListFragment);
                         break;
                 }
 
-                setMainFragment(new MapFragment());
+                mMapFragment = new MapFragment();
+                setMainFragment(mMapFragment);
             }
         }
     }
+
     @Override
-    public Mode GetCurrentMode() {
-        return mCurrentMode;
-    }
-    @Override
-    public Location GetSelectedLocation() {
-        return mSelectedLocation;
-    }
-    @Override
-    public void SetSelectedLocation(Location location) {
-        mSelectedLocation = location;
+    public void RefreshState() {
+        if(mLocationListFragment != null)
+            mLocationListFragment.RefreshLocationsList();
+
+        if(mMapFragment != null)
+            mMapFragment.RefreshMarkers();
     }
 
-    private void ChangeButtonsStyle(Mode mode)
-    {
+    @Override
+    public void UpdateCoordinateUI(LatLng lat) {
+        mLocationEditFragment.UpdateLongitude(lat.longitude);
+        mLocationEditFragment.UpdateLatitutde(lat.latitude);
+    }
+
+    private void ChangeButtonsStyle(Mode mode) {
         for(Button btn : mModeButtons)
         {
             ChangeButtonState(btn , NonActive);
@@ -107,8 +119,7 @@ public  class       MainActivity
         }
     }
 
-    private void ChangeButtonState(Button btn ,ButtonState state)
-    {
+    private void ChangeButtonState(Button btn ,ButtonState state) {
         if(state == Active){
             btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             btn.setTextColor(ContextCompat.getColor(this,R.color.White));
@@ -122,9 +133,9 @@ public  class       MainActivity
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.main_buttonAdd: HandleModeStateChange(Mode.ADD); break;
-            case R.id.main_buttonEdit: HandleModeStateChange(Mode.EDIT); break;
-            case R.id.main_buttonInfo: HandleModeStateChange(Mode.INFO); break;
+            case R.id.main_buttonAdd: ChangeActivityMode(Mode.ADD); break;
+            case R.id.main_buttonEdit: ChangeActivityMode(Mode.EDIT); break;
+            case R.id.main_buttonInfo: ChangeActivityMode(Mode.INFO); break;
         }
     }
 }

@@ -25,7 +25,6 @@ public class LocationLog {
         DataSeed();
     }
 
-
     public ArrayList<Location> getmLocations() {
         return mLocations;
     }
@@ -38,7 +37,7 @@ public class LocationLog {
         if(oldTask == null)
             return false;
 
-//        oldTask.UpdateTask(newTask);
+        oldTask.UpdateLocation(newTask);
         return true;
     }
 

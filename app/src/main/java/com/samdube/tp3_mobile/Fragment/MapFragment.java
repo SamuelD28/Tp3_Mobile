@@ -3,7 +3,6 @@ package com.samdube.tp3_mobile.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,15 +13,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
-import com.samdube.tp3_mobile.Interface.IApplicationState;
+import com.samdube.tp3_mobile.Abstract.MainActivityState;
 import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
-import com.samdube.tp3_mobile.View.LocationAddDialog;
-import com.samdube.tp3_mobile.View.LocationDetailDialog;
+import com.samdube.tp3_mobile.Dialog.LocationAddDialog;
+import com.samdube.tp3_mobile.Dialog.LocationDetailDialog;
 
 import java.util.ArrayList;
 
+import static com.samdube.tp3_mobile.Fragment.LocationEditFragment.EditFragmentCallback;
 import static com.samdube.tp3_mobile.Model.Location.Category;
 
 public  class       MapFragment
@@ -31,15 +31,17 @@ public  class       MapFragment
 
     private GoogleMap mMap;
     private LocationLog mLocationLog;
-    private IApplicationState mApplicationState; //This hold the parent activity
+    private MainActivityState mMainActivityState; //This hold the parent activity
     private ArrayList<Marker> mMarkers;
+    private EditFragmentCallback mEditFragmentCallback;
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
         mMarkers = new ArrayList<>();
-        mApplicationState = (IApplicationState)getActivity();
+        mMainActivityState = (MainActivityState)getActivity();
+        mEditFragmentCallback = (EditFragmentCallback)getActivity();
         mLocationLog = LocationLog.GetInstance();
 
         getMapAsync(this);
@@ -48,7 +50,7 @@ public  class       MapFragment
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        switch(mApplicationState.GetCurrentMode())
+        switch(mMainActivityState.getCurrentMode())
         {
             case ADD: ChangeToAddMode(); break;
             case EDIT: ChangeToEditMode(); break;
@@ -59,7 +61,18 @@ public  class       MapFragment
     public void ChangeToAddMode()
     {
         GenerateMarkers();
-        mMap.setOnMapClickListener(latLng -> { AddMarker(latLng); });
+        mMap.setOnMapClickListener(latLng -> {
+            mMainActivityState.setSelectedLocation(null);
+            AddMarker(latLng);
+        });
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                mMainActivityState.setSelectedLocation((Location)marker.getTag());
+                return true;
+            }
+        });
     }
 
     public void ChangeToInfoMode()
@@ -69,44 +82,56 @@ public  class       MapFragment
             @Override
             public boolean onMarkerClick(Marker marker) {
                 marker.showInfoWindow();
-
-                mApplicationState.SetSelectedLocation((Location)marker.getTag());
+                mMainActivityState.setSelectedLocation((Location)marker.getTag());
                 return true;
             }
         });
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                mApplicationState.SetSelectedLocation(null);
+                mMainActivityState.setSelectedLocation(null);
             }
         });
+        mMap.setOnInfoWindowClickListener(this);
+    }
+
+    public void RefreshMarkers()
+    {
+        mMarkers.clear();
+        mMap.clear();
+        GenerateMarkers();
     }
 
     public void ChangeToEditMode()
     {
-        GenerateMarker(mApplicationState.GetSelectedLocation()).setDraggable(true);
+        Marker selectedMarker = GenerateMarker(mMainActivityState.getTemporaryLocation());
+        selectedMarker.setDraggable(true);
+        mEditFragmentCallback.UpdateCoordinateUI(selectedMarker.getPosition());
+
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {
-                Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
+                mEditFragmentCallback.UpdateCoordinateUI(marker.getPosition());
             }
 
             @Override
             public void onMarkerDrag(Marker marker) {
-                Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
+                mEditFragmentCallback.UpdateCoordinateUI(marker.getPosition());
             }
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
-                Toast.makeText(getActivity(), marker.getPosition().toString(), Toast.LENGTH_SHORT).show();
+                mEditFragmentCallback.UpdateCoordinateUI(marker.getPosition());
             }
         });
     }
 
     private void AddMarker(LatLng latLng)
     {
-        new LocationAddDialog(getContext(), getActivity(), mApplicationState, latLng);
-//        GenerateMarker(newLocation);
+        Location newLocation = new Location();
+        newLocation.setLat(latLng.latitude);
+        newLocation.setLng(latLng.longitude);
+        new LocationAddDialog(getContext(), getActivity(), mMainActivityState, newLocation);
     }
 
     private void GenerateMarkers()
@@ -115,7 +140,6 @@ public  class       MapFragment
         {
             mMarkers.add(GenerateMarker(location));
         }
-        mMap.setOnInfoWindowClickListener(this);
     }
 
      private Marker GenerateMarker(Location location)
@@ -167,8 +191,8 @@ public  class       MapFragment
     @Override
     public void onInfoWindowClick(Marker marker)
     {
-        Location location = (Location) marker.getTag();
-        new LocationDetailDialog(getContext(), getActivity(), mApplicationState, location);
+        Location location = mMainActivityState.getTemporaryLocation();
+        new LocationDetailDialog(getContext(), getActivity(), mMainActivityState, location);
     }
 
 }

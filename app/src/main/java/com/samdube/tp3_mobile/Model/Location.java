@@ -23,7 +23,21 @@ public class Location {
     //Constructors
     public Location()
     {
-
+        this.mLat = 0;
+        this.mLng = 0;
+        this.mName = "";
+        this.mDescription = "";
+        this.mCategory = Category.Entertainment;
+        this.mUUID = UUID.randomUUID();
+    }
+    public Location(Location location)
+    {
+        this.mLat = location.getLat();
+        this.mLng = location.getLng();
+        this.mName = location.getName();
+        this.mDescription = location.getDescription();
+        this.mCategory = location.getCategory();
+        this.mUUID = location.getId();
     }
     public Location(double lat, double lng, String name, String description, Category category) {
         this.mLat = lat;
@@ -32,6 +46,15 @@ public class Location {
         this.mDescription = description;
         this.mCategory = category;
         this.mUUID = UUID.randomUUID();
+    }
+
+    public void UpdateLocation(Location newLocation)
+    {
+        this.mLat = newLocation.getLat();
+        this.mLng = newLocation.getLng();
+        this.mName = newLocation.getName();
+        this.mDescription = newLocation.getDescription();
+        this.mCategory = newLocation.getCategory();
     }
 
     //Getter
@@ -67,10 +90,10 @@ public class Location {
     public void setName(String mName) {
         this.mName = mName;
     }
-    public void setLat(int mLat) {
+    public void setLat(double mLat) {
         this.mLat = mLat;
     }
-    public void setLng(int mLng) {
+    public void setLng(double mLng) {
         this.mLng = mLng;
     }
 }
