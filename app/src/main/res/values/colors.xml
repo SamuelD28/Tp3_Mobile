@@ -7,5 +7,6 @@
     <color name="GreyDark">#e4e4e4</color>
     <color name="GreyDarker">#838383</color>
     <color name="White">#ffffff</color>
+    <color name="Dark">#484848</color>
     <color name="Green">#03DAC6</color>
 </resources>

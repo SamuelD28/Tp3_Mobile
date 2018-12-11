@@ -3,6 +3,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:textSize="12dp"
-    android:textColor="@color/GreyDark"
+    android:fontFamily="@font/raleway_medium"
+    android:textColor="@color/Dark"
     android:padding="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android" />

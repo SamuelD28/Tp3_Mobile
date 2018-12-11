@@ -26,7 +26,11 @@ public class LocationDetailDialog extends LocationFormDialog {
         mLocationFormTitle.setText(R.string.location_edit_title);
         mLocationNameInput.setText(mLocation.getName());
         mLocationDescInput.setText(mLocation.getDescription());
-        mLocationCategorySpinner.setAdapter(SpinnerCategoryAdapter.CreateAdapter(getContext()));
+
+        SpinnerCategoryAdapter adapter = new SpinnerCategoryAdapter(getContext());
+        mLocationCategorySpinner.setAdapter(adapter.getArrayAdapter());
+        mLocationCategorySpinner.setSelection(adapter.getCategoryPosition(mLocation.getCategory()));
+
         mEditButton.setVisibility(View.VISIBLE);
         mEditButton.setOnClickListener(HandleEdit());
 

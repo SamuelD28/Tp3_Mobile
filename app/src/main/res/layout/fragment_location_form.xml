@@ -59,13 +59,14 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_textinput"
                 android:ems="10"
-                android:fontFamily="@font/raleway_thin"
+                android:fontFamily="@font/raleway_medium"
                 android:hint="@string/location_form_nameInput"
                 android:inputType="textPersonName"
                 android:paddingLeft="4dp"
                 android:paddingTop="8dp"
                 android:paddingRight="4dp"
                 android:paddingBottom="8dp"
+                android:textColor="@color/Dark"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -90,7 +91,7 @@
                 android:layout_height="100dp"
                 android:background="@drawable/bg_textarea"
                 android:ems="10"
-                android:fontFamily="@font/raleway_thin"
+                android:fontFamily="@font/raleway_medium"
                 android:gravity="top"
                 android:hint="@string/location_form_descInput"
                 android:inputType="textMultiLine"
@@ -98,6 +99,7 @@
                 android:paddingTop="8dp"
                 android:paddingRight="4dp"
                 android:paddingBottom="4dp"
+                android:textColor="@color/Dark"
                 android:textSize="12sp" />
         </LinearLayout>
 

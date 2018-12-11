@@ -20,7 +20,9 @@ public class LocationAddDialog extends LocationFormDialog {
     public void InitiateLocationInputs()
     {
         mLocationFormTitle.setText(R.string.location_add_title);
-        mLocationCategorySpinner.setAdapter(SpinnerCategoryAdapter.CreateAdapter(getContext()));
+
+        SpinnerCategoryAdapter adapter = new SpinnerCategoryAdapter(getContext());
+        mLocationCategorySpinner.setAdapter(adapter.getArrayAdapter());
 
         mConfirmButton.setText(R.string.btn_confirm);
         mCancelButton.setText(R.string.btn_cancel);

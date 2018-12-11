@@ -11,7 +11,7 @@ import static com.samdube.tp3_mobile.Database.LocationDbSchema.*;
 public class LocationBaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "crimeBase.db";
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     public LocationBaseHelper(Context context) {
         super(context,DATABASE_NAME,null,VERSION);
