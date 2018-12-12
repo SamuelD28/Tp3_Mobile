@@ -16,14 +16,16 @@ import com.samdube.tp3_mobile.R;
 
 import java.util.List;
 
-/** Class used to instantiate a new recycler view to be used for displaying tasks.
+/**
+ * Class used to instantiate a new recycler view to be used for displaying tasks.
  * We dont use TaskLog taskList directly in here because i want to make this class more independant.
  */
-public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRecyclerViewAdapter.LocationViewHolder>{
+public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRecyclerViewAdapter.LocationViewHolder> {
 
     private LocationLog mLocationLog; //Property that holds the task list.
 
-    /** Constructor for the Recycler View adapter. We need a list argument to instantiate the class
+    /**
+     * Constructor for the Recycler View adapter. We need a list argument to instantiate the class
      */
     public LocationRecyclerViewAdapter(Context context) {
         this.mLocationLog = LocationLog.GetInstance(context);
@@ -36,57 +38,60 @@ public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRe
         return new LocationViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
-
-        if((mLocationLog.getLocations().isEmpty()))
-        {
+        if ((mLocationLog.getLocations().isEmpty())) {
             //If nothing is ccontained inside the tasklist, we display a default card to the user
-            holder.mName.setText("Aucune location Disponible");
+            holder.mName.setText(R.string.no_location_available);
         } else {
             Location location = mLocationLog.getLocations().get(position);
 
             holder.mName.setText(location.getName());
-            holder.mLatitude.setText(String.valueOf(location.getLat()));
-            holder.mLongitutde.setText(String.valueOf(location.getLng()));
 
-            switch(location.getCategory())
-            {
-                case Entertainment: holder.mCategory.setImageResource(R.drawable.ic_entertainment); break;
-                case Restaurant: holder.mCategory.setImageResource(R.drawable.ic_restaurant); break;
-                case Hotel: holder.mCategory.setImageResource(R.drawable.ic_hotel); break;
-                case Touristic: holder.mCategory.setImageResource(R.drawable.ic_touristic); break;
+            switch (location.getCategory()) {
+                case Entertainment:
+                    holder.mCategory.setImageResource(R.drawable.ic_entertainment);
+                    break;
+                case Restaurant:
+                    holder.mCategory.setImageResource(R.drawable.ic_restaurant);
+                    break;
+                case Hotel:
+                    holder.mCategory.setImageResource(R.drawable.ic_hotel);
+                    break;
+                case Touristic:
+                    holder.mCategory.setImageResource(R.drawable.ic_touristic);
+                    break;
             }
         }
     }
 
-    /** Methos that returns the number of task inside the tasklist
-     * @return Number of tasks
+    /**
+     * Methos that returns the number of locations inside the database
+     *
+     * @return Number of locations
      */
     @Override
     public int getItemCount() {
-        return ((mLocationLog != null) && (mLocationLog.getLocations().size() != 0)? mLocationLog.getLocations().size(): 0);
+        return ((mLocationLog != null) && (mLocationLog.getLocations().size() != 0) ? mLocationLog.getLocations().size() : 0);
     }
 
-    /** Class used by the recycler view to create new list item.
-     *  Uses the fragment_task_card.
+    /**
+     * Class used by the recycler view to create new list item.
      */
-    static class LocationViewHolder extends RecyclerView.ViewHolder{
+    static class LocationViewHolder extends RecyclerView.ViewHolder {
 
+        //UI Variable
         private TextView mName = null;
-        private TextView mLatitude = null;
-        private TextView mLongitutde = null;
         private ImageView mCategory = null;
 
-        /** Constructor for the ViewHolder. We select item from the view here.
+        /**
+         * Constructor for the ViewHolder. We select item from the view here.
+         *
          * @param itemView The created view
          */
-        public LocationViewHolder(View itemView){
+        public LocationViewHolder(View itemView) {
             super(itemView);
             this.mName = itemView.findViewById(R.id.location_card_name);
-            this.mLatitude = itemView.findViewById(R.id.location_card_latitude);
-            this.mLongitutde = itemView.findViewById(R.id.location_card_longitude);
             this.mCategory = itemView.findViewById(R.id.location_card_category);
         }
     }

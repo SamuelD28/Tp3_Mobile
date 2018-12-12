@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 
 import com.samdube.tp3_mobile.R;
 
+/**
+ * Fragment that display a message to the user
+ * for choosing a location on the map
+ */
 public class LocationAddFragment extends Fragment {
 
     @Nullable

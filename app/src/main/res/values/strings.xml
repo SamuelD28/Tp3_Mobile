@@ -30,4 +30,5 @@
     <string name="btn_mode_Info">Info</string>
     <string name="btn_mode_default">Default</string>
     <string name="btn_mode_Edit">Edit</string>
+    <string name="no_location_available">No location available</string>
 </resources>

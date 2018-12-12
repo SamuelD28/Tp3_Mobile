@@ -19,29 +19,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/location_form_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:fontFamily="@font/raleway_medium"
-            android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/location_form_editCoord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/raleway_medium"
-            android:text="@string/btn_edit_coordinate"
-            android:textColor="@color/colorPrimary"
-            android:textSize="10dp" />
+            <TextView
+                android:id="@+id/location_form_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_medium"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
+
+            <ImageButton
+                android:id="@+id/location_form_closeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/button_close" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -73,7 +79,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -104,29 +110,48 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:paddingBottom="20dp">
 
-            <TextView
-                android:id="@+id/location_form_categoryLabel"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_weight="1.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/location_form_categoryLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/raleway_medium"
+                    android:text="@string/location_form_categoryLabel"
+                    android:textColor="@color/GreyDarker" />
+
+                <Spinner
+                    android:id="@+id/location_form_categoryInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_spinner"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingBottom="4dp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/location_form_editCoord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_weight=".5"
                 android:fontFamily="@font/raleway_medium"
-                android:text="@string/location_form_categoryLabel"
-                android:textColor="@color/GreyDarker" />
-
-            <Spinner
-                android:id="@+id/location_form_categoryInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_spinner"
-                android:paddingLeft="4dp"
-                android:paddingTop="4dp"
-                android:paddingRight="4dp"
-                android:paddingBottom="4dp" />
+                android:text="@string/btn_edit_coordinate"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10dp" />
 
         </LinearLayout>
 

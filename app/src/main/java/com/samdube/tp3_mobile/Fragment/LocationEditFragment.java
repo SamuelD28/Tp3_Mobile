@@ -19,58 +19,87 @@ import com.samdube.tp3_mobile.R;
 import static com.samdube.tp3_mobile.Abstract.MainActivityState.*;
 
 
+/**
+ * Fragment used to display a feedback to the user when editing a location coordinate
+ * and provide the logic for saving the coordinate in the appropriate location
+ */
 public class LocationEditFragment extends Fragment {
 
-    public interface EditFragmentCallback{
+    /**
+     * Contract interface that the activity needs to implement.
+     * Provide a function to update the view inputs coordinate
+     * when the user moves a marker location
+     */
+    public interface EditFragmentCallback {
         void UpdateCoordinateUI(LatLng lat);
     }
 
-    private MainActivityState mMainActivityState;
-    private EditFragmentCallback mUpdateCoordinate;
+    //UI Variables
     private TextView mLongitudeInput;
     private TextView mLatitudeInput;
-    private Location mSelectedLocation;
-    private LocationLog mLocationLog;
+
+    //Logic Variables
+    private MainActivityState mMainActivityState;   //Application State
+    private Location mSelectedLocation;             //Selected location inside the application
+    private LocationLog mLocationLog;               //Location log for interacting with the database
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_location_edit, getActivity().findViewById(R.id.locations_edit_root));
 
+        //Verify that the activity implemented the interface
+        EditFragmentCallback activity = (EditFragmentCallback) getActivity();
+
         //Need to add try catch around them
-        mMainActivityState = (MainActivityState)getActivity();
-        mUpdateCoordinate = (EditFragmentCallback)getActivity();
+        mMainActivityState = (MainActivityState) getActivity();
         mSelectedLocation = mMainActivityState.getTemporaryLocation();
         mLocationLog = LocationLog.GetInstance(getContext());
 
+        //Selection of the UI elements
         Button confirmButton = view.findViewById(R.id.location_edit_confirmBtn);
-        confirmButton.setOnClickListener(HandleConfirm());
         Button cancelBtn = view.findViewById(R.id.location_edit_cancelBtn);
-        cancelBtn.setOnClickListener(v -> mMainActivityState.ChangeActivityMode(Mode.INFO));
-
         mLatitudeInput = view.findViewById(R.id.location_edit_latitudeInput);
         mLongitudeInput = view.findViewById(R.id.location_edit_longitudeInput);
+
+        //Creation fo the listeners
+        confirmButton.setOnClickListener(HandleConfirm());
+        cancelBtn.setOnClickListener(v -> mMainActivityState.ChangeActivityMode(Mode.INFO));
 
         return view;
     }
 
-    private View.OnClickListener HandleConfirm()
-    {
+    /**
+     * Function that handles the confirm button click in the fragment
+     *
+     * @return the created listener
+     */
+    private View.OnClickListener HandleConfirm() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLocationLog.UpdateLocation(mSelectedLocation);
+                mLocationLog.UpdateLocation(mMainActivityState.getTemporaryLocation());
                 mMainActivityState.ChangeActivityMode(Mode.INFO);
             }
         };
     }
 
+    /**
+     * Function that update the longitude input
+     *
+     * @param lng new longitude input value
+     */
     public void UpdateLongitude(double lng) {
         mSelectedLocation.setLng(lng);
         mLongitudeInput.setText(String.valueOf(mSelectedLocation.getLng()));
     }
 
-    public void UpdateLatitutde(double lat) {
+    /**
+     * Function that update the latitude input
+     *
+     * @param lat new latitude input value
+     */
+    public void UpdateLatitude(double lat) {
         mSelectedLocation.setLat(lat);
         mLatitudeInput.setText(String.valueOf(mSelectedLocation.getLat()));
     }

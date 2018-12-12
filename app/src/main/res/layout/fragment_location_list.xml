@@ -8,8 +8,10 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,20 +19,21 @@
 
         <TextView
             android:id="@+id/locations_list_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight=".6"
             android:fontFamily="@font/raleway_medium"
             android:padding="10dp"
             android:text="@string/location_list_title"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/locations_list_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/background_light"
+            android:layout_weight="1"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,6 +41,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

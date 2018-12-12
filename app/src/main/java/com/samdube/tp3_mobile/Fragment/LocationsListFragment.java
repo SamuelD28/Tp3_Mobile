@@ -18,41 +18,59 @@ import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
 import com.samdube.tp3_mobile.Dialog.LocationDetailDialog;
 
-public
-        class LocationsListFragment
+/**
+ * Fragment used for displaying a list of all the location inside the database
+ */
+public class LocationsListFragment
         extends Fragment implements RecyclerItemClickListener.OnRecyclerClickListener {
 
-    private RecyclerView mLocationsRecyclerView;
-    private LocationLog mLocationLog;
-    private MainActivityState mMainActivityState;
+    //Logic Variable
+    private RecyclerView mLocationsRecyclerView;    //Recycler view for displaying the list
+    private LocationLog mLocationLog;               //Location log for interacting with the database
+    private MainActivityState mMainActivityState;   //Application state
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_location_list, container.findViewById(R.id.location_list_root));
 
+        //Find the recycler view
         mLocationsRecyclerView = view.findViewById(R.id.locations_list_recyclerView);
         mLocationLog = LocationLog.GetInstance(getContext());
-        mMainActivityState = (MainActivityState)getActivity();
+        mMainActivityState = (MainActivityState) getActivity();
 
-        GenerateLocationsList();
+        //Generate the recycler with its required components
+        GenerateRecyclerView();
         return view;
     }
 
-    public void RefreshLocationsList()
-    {
-        GenerateLocationsList();
+    /**
+     * Function that regenerate the recycler view
+     */
+    public void RefreshLocationsList() {
+        GenerateRecyclerView();
     }
 
-    private void GenerateLocationsList() {
+    /**
+     * Function that generate the recycler view and its adapter for displaying data
+     */
+    private void GenerateRecyclerView() {
         //Set the layout manager for the layout view
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mLocationsRecyclerView.setLayoutManager(linearLayoutManager); //Might need to acess context from activity
+        mLocationsRecyclerView.setLayoutManager(linearLayoutManager);
+        //Set the item touch listener
         mLocationsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mLocationsRecyclerView, this));
+        //Set the recycler view adapter
         LocationRecyclerViewAdapter mTaskRecyclerViewAdapter = new LocationRecyclerViewAdapter(getContext());
         mLocationsRecyclerView.setAdapter(mTaskRecyclerViewAdapter);
     }
 
+    /**
+     * Event listener when a view holder inside the item listener is clicked
+     *
+     * @param view     View object that triggered the event
+     * @param position postion of the item that was clicked
+     */
     @Override
     public void onItemClick(View view, int position) {
         Location location = mLocationLog.getLocations().get(position);
@@ -60,8 +78,14 @@ public
         new LocationDetailDialog(getContext(), getActivity(), mMainActivityState, location);
     }
 
+    /**
+     * Function that handle a long click on a view holder inside the recycler view. NOT IMPLEMENTED
+     *
+     * @param view     View that triggered the event
+     * @param position Position of the view holder that was clicked
+     */
     @Override
     public void onItemLongClick(View view, int position) {
-
+        //Not implemented
     }
 }
