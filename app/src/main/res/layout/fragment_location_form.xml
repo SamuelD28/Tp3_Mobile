@@ -112,49 +112,44 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="150dp"
+            <TextView
+                android:id="@+id/location_form_categoryLabel"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/location_form_categoryLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/raleway_medium"
-                    android:text="@string/location_form_categoryLabel"
-                    android:textColor="@color/GreyDarker" />
-
-                <Spinner
-                    android:id="@+id/location_form_categoryInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_spinner"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="4dp"
-                    android:paddingBottom="4dp" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/location_form_editCoord"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_marginBottom="4dp"
                 android:fontFamily="@font/raleway_medium"
-                android:text="@string/btn_edit_coordinate"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12dp" />
+                android:text="@string/location_form_categoryLabel"
+                android:textColor="@color/GreyDarker" />
+
+            <Spinner
+                android:id="@+id/location_form_categoryInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_spinner"
+                android:paddingLeft="4dp"
+                android:paddingTop="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="4dp" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/location_form_editCoord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/GreyDark"
+            android:fontFamily="@font/raleway_medium"
+            android:padding="7dp"
+            android:text="@string/btn_edit_coordinate"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12dp" />
 
     </LinearLayout>
 

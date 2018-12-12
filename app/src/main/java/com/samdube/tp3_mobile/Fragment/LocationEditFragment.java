@@ -76,7 +76,7 @@ public class LocationEditFragment extends Fragment {
      */
     private View.OnClickListener HandleConfirm() {
         return v -> {
-            mLocationLog.UpdateLocation(mMainActivityState.getTemporaryLocation());
+            mLocationLog.UpdateLocation(mSelectedLocation);
             mMainActivityState.ChangeActivityMode(Mode.INFO);
         };
     }
