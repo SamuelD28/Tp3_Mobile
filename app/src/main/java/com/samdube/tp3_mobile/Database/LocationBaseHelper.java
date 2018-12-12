@@ -27,7 +27,7 @@ public class LocationBaseHelper extends SQLiteOpenHelper {
     /**
      * Function that creates a new sqlite database
      *
-     * @param sqLiteDatabase
+     * @param sqLiteDatabase database to read from
      */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {

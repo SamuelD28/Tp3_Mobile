@@ -68,11 +68,10 @@ public class LocationsListFragment
     /**
      * Event listener when a view holder inside the item listener is clicked
      *
-     * @param view     View object that triggered the event
      * @param position postion of the item that was clicked
      */
     @Override
-    public void onItemClick(View view, int position) {
+    public void onItemClick(int position) {
         Location location = mLocationLog.getLocations().get(position);
         mMainActivityState.setSelectedLocation(location);
         new LocationDetailDialog(getContext(), getActivity(), mMainActivityState, location);

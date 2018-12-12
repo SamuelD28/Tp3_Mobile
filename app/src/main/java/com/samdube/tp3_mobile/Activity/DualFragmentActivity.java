@@ -18,7 +18,7 @@ public abstract class DualFragmentActivity extends AppCompatActivity {
      *
      * @param newFragment New Fragment used to set the top fragment
      */
-    public void setTopFragment(Fragment newFragment) {
+    protected void setTopFragment(Fragment newFragment) {
         setFragment(R.id.top_fragment, newFragment);
     }
 
@@ -27,7 +27,7 @@ public abstract class DualFragmentActivity extends AppCompatActivity {
      *
      * @param newFragment New fragment used to set the main fragment
      */
-    public void setMainFragment(Fragment newFragment) {
+    protected void setMainFragment(Fragment newFragment) {
         setFragment(R.id.main_fragment, newFragment);
     }
 

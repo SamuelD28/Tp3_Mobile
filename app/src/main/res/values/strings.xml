@@ -13,7 +13,7 @@
     <string name="location_add_title">Add new location</string>
 
     <string name="location_form_nameLabel">Name</string>
-    <string name="location_form_nameInput">Name of the location...</string>
+    <string name="location_form_nameInput">Name of the location…</string>
     <string name="location_form_descLabel">Description</string>
     <string name="location_form_descInput">Description of the location</string>
     <string name="location_form_categoryLabel">Category</string>

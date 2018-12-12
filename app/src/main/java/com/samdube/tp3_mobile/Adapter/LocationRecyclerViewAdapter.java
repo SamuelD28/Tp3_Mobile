@@ -1,6 +1,5 @@
 package com.samdube.tp3_mobile.Adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +13,13 @@ import com.samdube.tp3_mobile.Model.Location;
 import com.samdube.tp3_mobile.Model.LocationLog;
 import com.samdube.tp3_mobile.R;
 
-import java.util.List;
-
 /**
  * Class used to instantiate a new recycler view to be used for displaying tasks.
  * We dont use TaskLog taskList directly in here because i want to make this class more independant.
  */
 public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRecyclerViewAdapter.LocationViewHolder> {
 
-    private LocationLog mLocationLog; //Property that holds the task list.
+    private final LocationLog mLocationLog; //Property that holds the task list.
 
     /**
      * Constructor for the Recycler View adapter. We need a list argument to instantiate the class
@@ -89,7 +86,7 @@ public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRe
          *
          * @param itemView The created view
          */
-        public LocationViewHolder(View itemView) {
+        LocationViewHolder(View itemView) {
             super(itemView);
             this.mName = itemView.findViewById(R.id.location_card_name);
             this.mCategory = itemView.findViewById(R.id.location_card_category);

@@ -141,7 +141,7 @@ public class MainActivity
     /**
      * Function that changes the button style to reflect the current mode
      *
-     * @param mode
+     * @param mode New Mode
      */
     private void ChangeButtonsStyle(Mode mode) {
         //Remove the active styles of all the buttons

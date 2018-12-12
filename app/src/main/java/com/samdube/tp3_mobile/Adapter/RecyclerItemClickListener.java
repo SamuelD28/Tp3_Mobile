@@ -11,8 +11,9 @@ public class RecyclerItemClickListener extends RecyclerView.SimpleOnItemTouchLis
 
     //Interface that needs to be implemented by the parent who uses the recyclerview
     public interface OnRecyclerClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(int position);
 
+        @SuppressWarnings("EmptyMethod")
         void onItemLongClick(View view, int position);
     }
 
@@ -35,7 +36,7 @@ public class RecyclerItemClickListener extends RecyclerView.SimpleOnItemTouchLis
                 View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());
                 //If a childview was found, return it to the parent implementation method and retrieve the child position within the adapter
                 if (childView != null && mListener != null) {
-                    mListener.onItemClick(childView, recyclerView.getChildAdapterPosition(childView));
+                    mListener.onItemClick(recyclerView.getChildAdapterPosition(childView));
                 }
                 return true;
             }

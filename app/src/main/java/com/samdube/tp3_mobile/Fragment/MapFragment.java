@@ -59,7 +59,7 @@ public class MapFragment
     /**
      * Function that retrieve the google map.
      *
-     * @param googleMap
+     * @param googleMap Google map
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -82,7 +82,7 @@ public class MapFragment
     /**
      * Function that change the map to add mode
      */
-    public void ChangeToAddMode() {
+    private void ChangeToAddMode() {
         //Generate all the markers
         GenerateMarkers();
         //Set the required listeners
@@ -93,7 +93,7 @@ public class MapFragment
     /**
      * Function that change the map to info mode
      */
-    public void ChangeToInfoMode() {
+    private void ChangeToInfoMode() {
         //Generate all the markers
         GenerateMarkers();
         //Set the required listeners
@@ -104,7 +104,7 @@ public class MapFragment
     /**
      * Function that change the map to edit mode
      */
-    public void ChangeToEditMode() {
+    private void ChangeToEditMode() {
         //Generate the selected location marker
         Marker selectedMarker = GenerateMarker(mMainActivityState.getTemporaryLocation());
         selectedMarker.setDraggable(true);
@@ -121,7 +121,7 @@ public class MapFragment
      * @param addNewMarker boolean specifying if we add a new marker to the tapped location
      * @return the created listener
      */
-    public GoogleMap.OnMapClickListener HandleMapClick(boolean addNewMarker) {
+    private GoogleMap.OnMapClickListener HandleMapClick(boolean addNewMarker) {
         return latLng -> {
             //Add a new marker if specified
             if (addNewMarker)
@@ -138,7 +138,7 @@ public class MapFragment
      * @param showInfoWindow boolean to indicate if we show the info window when we click marker
      * @return the created listener
      */
-    public GoogleMap.OnMarkerClickListener HandleMarkerClick(boolean showInfoWindow) {
+    private GoogleMap.OnMarkerClickListener HandleMarkerClick(boolean showInfoWindow) {
         return marker -> {
             //Show the info window if specified
             if (showInfoWindow) {
@@ -156,7 +156,7 @@ public class MapFragment
      *
      * @return the create listener
      */
-    public GoogleMap.OnMarkerDragListener HandleMakerDrag() {
+    private GoogleMap.OnMarkerDragListener HandleMakerDrag() {
         return new GoogleMap.OnMarkerDragListener() {
 
             //We update the edit fragment coordinate whenever we move the marker
@@ -286,7 +286,7 @@ public class MapFragment
 
     /** Function that handle when the marker info window is clicked. Display
      *  a location detail form
-     * @param marker
+     * @param marker marker clicked
      */
     @Override
     public void onInfoWindowClick(Marker marker) {

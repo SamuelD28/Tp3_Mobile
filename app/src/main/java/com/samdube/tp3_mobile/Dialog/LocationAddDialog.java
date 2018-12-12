@@ -32,7 +32,7 @@ public class LocationAddDialog extends LocationFormDialog {
     /**
      * Function that initialise the inputs value inside the form
      */
-    public void InitiateLocationInputs() {
+    protected void InitiateLocationInputs() {
         //Set the spinner adapater
         SpinnerCategoryAdapter adapter = new SpinnerCategoryAdapter(getContext());
         mLocationCategorySpinner.setAdapter(adapter.getArrayAdapter());
@@ -47,20 +47,17 @@ public class LocationAddDialog extends LocationFormDialog {
      */
     @Override
     protected View.OnClickListener HandleConfirm() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //If the form verification passed, we add the location to the database
-                if (FormVerification()) {
-                    //Apply the changes made in the form to mLocation
-                    ApplyChangeToLocation();
-                    //Add mLocation inside the database
-                    mLocationLog.AddLocation(mLocation);
-                    //Refresh the application state to display the changes
-                    mMainActivityState.RefreshState();
-                    //Close the dialog
-                    mCurrentDialog.dismiss();
-                }
+        return v -> {
+            //If the form verification passed, we add the location to the database
+            if (FormVerification()) {
+                //Apply the changes made in the form to mLocation
+                ApplyChangeToLocation();
+                //Add mLocation inside the database
+                mLocationLog.AddLocation(mLocation);
+                //Refresh the application state to display the changes
+                mMainActivityState.RefreshState();
+                //Close the dialog
+                mCurrentDialog.dismiss();
             }
         };
     }
@@ -70,14 +67,11 @@ public class LocationAddDialog extends LocationFormDialog {
      */
     @Override
     protected View.OnClickListener HandleCancel() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Remove the selected location
-                mMainActivityState.setSelectedLocation(null);
-                //Close the dialog
-                mCurrentDialog.dismiss();
-            }
+        return v -> {
+            //Remove the selected location
+            mMainActivityState.setSelectedLocation(null);
+            //Close the dialog
+            mCurrentDialog.dismiss();
         };
     }
 

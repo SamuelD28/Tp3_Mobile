@@ -48,7 +48,7 @@ public abstract class MainActivityState
      * Return a new location based on the selected location. Used to prevent
      * unwanted modification of the original location
      *
-     * @return
+     * @return new location based on the selected location
      */
     public Location getTemporaryLocation() {
         return new Location(mSelectedLocation);

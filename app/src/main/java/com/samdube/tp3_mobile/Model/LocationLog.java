@@ -21,7 +21,7 @@ public class LocationLog {
 
     //Logic Variable
     private static LocationLog INSTANCE = null; //Instance of the class used for the singleton pattern
-    private SQLiteDatabase mDatabase;           //Database for making query
+    private final SQLiteDatabase mDatabase;           //Database for making query
 
     /**
      * Function that return the current instance if there is one or creates it
@@ -39,7 +39,7 @@ public class LocationLog {
     /**
      * Private Constructor that create a new location log
      *
-     * @param context
+     * @param context Context of the application
      */
     private LocationLog(Context context) {
         //Retrieve a database from the database helper class
@@ -55,7 +55,7 @@ public class LocationLog {
     public Location getLocation(UUID id) {
         //Create a cursor wrapper and try to the first element to
         // see if the query found something
-        LocationCursorWrapper cursor = new LocationCursorWrapper(
+        try (LocationCursorWrapper cursor = new LocationCursorWrapper(
                 mDatabase.query(LocationTable.NAME,
                         null,
                         LocationTable.Cols.UUID + "=?",
@@ -63,23 +63,20 @@ public class LocationLog {
                         null,
                         null,
                         null)
-        );
-        try {
+        )) {
             if (cursor.getCount() == 0)
                 return null;
 
             cursor.moveToFirst();
             return cursor.getLocation();
 
-        } finally {
-            cursor.close();
         }
     }
 
     /**
      * Function that retrieve a list of all the locations inside the database
      *
-     * @return
+     * @return List of locations
      */
     public List<Location> getLocations() {
 

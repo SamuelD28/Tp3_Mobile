@@ -13,7 +13,7 @@ import static com.samdube.tp3_mobile.Model.Location.Category;
 public class SpinnerCategoryAdapter {
 
     //Logic Variables
-    private ArrayAdapter<Category> mArrayAdapter; //Contains the list of all the category enumeration
+    private final ArrayAdapter<Category> mArrayAdapter; //Contains the list of all the category enumeration
 
     /**
      * Constructor for a new spinner category adapter

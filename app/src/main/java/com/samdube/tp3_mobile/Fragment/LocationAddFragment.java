@@ -19,7 +19,6 @@ public class LocationAddFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_location_add, getActivity().findViewById(R.id.locations_add_root));
-        return view;
+        return inflater.inflate(R.layout.fragment_location_add, getActivity().findViewById(R.id.locations_add_root));
     }
 }

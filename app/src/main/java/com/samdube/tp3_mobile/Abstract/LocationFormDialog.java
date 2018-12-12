@@ -25,26 +25,27 @@ import static com.samdube.tp3_mobile.Utils.Validation.Between;
  * the location dialog form (Add, Edit).
  * This class used the layout fragment_location_form for his UI.
  */
+@SuppressWarnings("unused")
 public abstract class LocationFormDialog extends AlertDialog {
 
     //UI Variable
     protected TextView mLocationFormTitle;
-    protected TextView mLocationNameLabel;
+    private TextView mLocationNameLabel;
     protected EditText mLocationNameInput;
-    protected TextView mLocationDescLabel;
+    private TextView mLocationDescLabel;
     protected EditText mLocationDescInput;
-    protected TextView mLocationCategoryLabel;
+    private TextView mLocationCategoryLabel;
     protected Spinner mLocationCategorySpinner;
     protected Button mConfirmButton;
     protected Button mCancelButton;
     protected Button mEditButton;
-    protected ImageButton mCloseButton;
+    private ImageButton mCloseButton;
 
     //Logic Variable
-    protected MainActivityState mMainActivityState; //Activity state used to modify the current application state
-    protected LocationLog mLocationLog;             //Location log to interact with the location in the database
+    protected final MainActivityState mMainActivityState; //Activity state used to modify the current application state
+    protected final LocationLog mLocationLog;             //Location log to interact with the location in the database
     protected AlertDialog mCurrentDialog;           //Hold the current alert dialog.
-    protected Location mLocation;                   //Location used to populate the form.
+    protected final Location mLocation;                   //Location used to populate the form.
 
     /**
      * Base constructtor for a location form dialog
@@ -54,7 +55,7 @@ public abstract class LocationFormDialog extends AlertDialog {
      * @param mainActivityState Activity State used for manipulating the application state
      * @param location          Location used for populating fields. Create an empty location for a Add form.
      */
-    public LocationFormDialog(Context context, Activity activity, MainActivityState mainActivityState, Location location) {
+    protected LocationFormDialog(Context context, Activity activity, MainActivityState mainActivityState, Location location) {
         super(context);
         mMainActivityState = mainActivityState;
         mLocationLog = LocationLog.GetInstance(getContext());
@@ -119,9 +120,7 @@ public abstract class LocationFormDialog extends AlertDialog {
      * @return the created listener
      */
     private View.OnClickListener HandleClose() {
-        return v -> {
-            mCurrentDialog.dismiss();
-        };
+        return v -> mCurrentDialog.dismiss();
     }
 
     /**
@@ -132,8 +131,6 @@ public abstract class LocationFormDialog extends AlertDialog {
      */
     protected boolean FormVerification() {
         //Raw values extracted from the inputs
-        String locationName = mLocationNameInput.getText().toString();
-        String locationDescription = mLocationDescInput.getText().toString();
         Category locationCategory = (Category) mLocationCategorySpinner.getSelectedItem();
 
         //Verification of the inputs

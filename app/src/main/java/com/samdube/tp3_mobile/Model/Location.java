@@ -123,10 +123,6 @@ public class Location {
         this.mCategory = mCategory;
     }
 
-    public void setId(UUID mUUID) {
-        this.mUUID = mUUID;
-    }
-
     public void setName(String mName) {
         this.mName = mName;
     }

@@ -75,12 +75,9 @@ public class LocationEditFragment extends Fragment {
      * @return the created listener
      */
     private View.OnClickListener HandleConfirm() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLocationLog.UpdateLocation(mMainActivityState.getTemporaryLocation());
-                mMainActivityState.ChangeActivityMode(Mode.INFO);
-            }
+        return v -> {
+            mLocationLog.UpdateLocation(mMainActivityState.getTemporaryLocation());
+            mMainActivityState.ChangeActivityMode(Mode.INFO);
         };
     }
 

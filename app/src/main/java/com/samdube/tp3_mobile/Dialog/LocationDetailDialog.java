@@ -37,7 +37,7 @@ public class LocationDetailDialog extends LocationFormDialog {
      * Function that initiate the form inputs with the proper dat
      */
     @Override
-    public void InitiateLocationInputs() {
+    protected void InitiateLocationInputs() {
         //Sets all the text inputs
         mLocationFormTitle.setText(R.string.location_edit_title);
         mLocationNameInput.setText(mLocation.getName());
@@ -61,15 +61,12 @@ public class LocationDetailDialog extends LocationFormDialog {
      *
      * @return the created listener
      */
-    public View.OnClickListener HandleEdit() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Change the application state to edit mode
-                mMainActivityState.ChangeActivityMode(Mode.EDIT);
-                //Close the current dialog
-                mCurrentDialog.dismiss();
-            }
+    private View.OnClickListener HandleEdit() {
+        return v -> {
+            //Change the application state to edit mode
+            mMainActivityState.ChangeActivityMode(Mode.EDIT);
+            //Close the current dialog
+            mCurrentDialog.dismiss();
         };
     }
 
@@ -80,20 +77,17 @@ public class LocationDetailDialog extends LocationFormDialog {
      */
     @Override
     public View.OnClickListener HandleConfirm() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //If the form verification succeeded, we process the form
-                if (FormVerification()) {
-                    //Apply the form changes to mLocation
-                    ApplyChangeToLocation();
-                    //Update the selected location inside the database
-                    mLocationLog.UpdateLocation(mLocation);
-                    //Refresh the activity state to show the changes
-                    mMainActivityState.RefreshState();
-                    //Close the dialog
-                    mCurrentDialog.dismiss();
-                }
+        return v -> {
+            //If the form verification succeeded, we process the form
+            if (FormVerification()) {
+                //Apply the form changes to mLocation
+                ApplyChangeToLocation();
+                //Update the selected location inside the database
+                mLocationLog.UpdateLocation(mLocation);
+                //Refresh the activity state to show the changes
+                mMainActivityState.RefreshState();
+                //Close the dialog
+                mCurrentDialog.dismiss();
             }
         };
     }
@@ -105,18 +99,15 @@ public class LocationDetailDialog extends LocationFormDialog {
      */
     @Override
     public View.OnClickListener HandleCancel() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Delete the selected location inside the database
-                mLocationLog.DeleteTask(mLocation.getId());
-                //Remove the selected location
-                mMainActivityState.setSelectedLocation(null);
-                //Refresh the application state to show the changes
-                mMainActivityState.RefreshState();
-                //Close the dialog
-                mCurrentDialog.dismiss();
-            }
+        return v -> {
+            //Delete the selected location inside the database
+            mLocationLog.DeleteTask(mLocation.getId());
+            //Remove the selected location
+            mMainActivityState.setSelectedLocation(null);
+            //Refresh the application state to show the changes
+            mMainActivityState.RefreshState();
+            //Close the dialog
+            mCurrentDialog.dismiss();
         };
     }
 }
